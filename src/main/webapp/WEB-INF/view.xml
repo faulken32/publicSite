@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="step1" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/step1.jsp" />
+    </definition>
+    <definition name="step2" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/step2.jsp" />
+    </definition>
+    <definition name="step3" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/step3.jsp" />
+    </definition>
+    <definition name="getCandidat" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/getCandidat.jsp" />
+    </definition> 
+    
+    <definition name="simple" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/simple.jsp" />
+    </definition>
+    
+    <definition name="login" extends="default">
+        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+    </definition>        
+</tiles-definitions>
