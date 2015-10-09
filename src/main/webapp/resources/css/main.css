@@ -9,21 +9,42 @@ and open the template in the editor.
 */
 
 .withBorder{
-    
-    
-    
+
+
+
     border-bottom-color: gray;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    
-    
+
+
 }
 
 
 .marginTop{  
-   margin-top: 44px;        
+    margin-top: 44px;        
 }
+
+.backgrondTrans{
+
+    background: rgba(51,51,51,0.4);
+    border-radius: 3px;
+    
+    box-sizing: content-box;
+    padding: 12px 17px;
+    color: #f8f8f8;
+    background: rgba(51,51,51,0.4);
+    margin-bottom: 30px;
+    position: relative;
+}
+
 
 .gray{
     color: #999999;
+}
+
+.back{
+    background-attachment: fixed, fixed;
+    background-color: rgba(102,105,104,0.9);
+    background-image : -webkit-radial-gradient(10% 0, farthest-side ellipse, rgba(102,105,104,0.9), rgba(93,112,119,0.89), rgba(160,174,150,0.9));
+
 }

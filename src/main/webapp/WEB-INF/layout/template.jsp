@@ -21,7 +21,7 @@
          <script src=" <c:url value="/resources/js/jquery-ui/jquery-ui.js" />"></script> 
     </head>
 
-    <body>
+    <body class="back">
         <tiles:insertAttribute name="header"/>
         <tiles:insertAttribute name="nav"/>
 

@@ -15,11 +15,11 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 backgrondTrans">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Données personelles <span id="modif" class="glyphicon glyphicon-pencil"></span></div>
-            <div class="panel-body ">   
+        <div class="">
+            <div class="">Données personelles <span id="modif" class="glyphicon glyphicon-pencil"></span></div>
+            <div class="">   
                 <div class="row gray">
                     <div class="col-md-3">
                         <h4> ${candidat.surname} ${candidat.name}</h4>
@@ -94,7 +94,7 @@
 
                 <div class="row marginTop center-block">
 
-                    <div class="col-md-12 well ">
+                    <div class="col-md-12">
 
 
                         ${candidat.cvContends}
