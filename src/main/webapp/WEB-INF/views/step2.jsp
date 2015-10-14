@@ -6,32 +6,31 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Ajoutez une nouvelle expérience profésionnelle</div>
                 <div class="panel-body">
-                    <form id="addexp" method="post">
-
-                       
+                    <form id="addexp" method="post" action="<c:url value="/register/step2/${exp.id}"/>">
+                        <input type="hidden" name="update" value="${update}" />
                         <div class="form-group">
                             <label for="compagny">
                                 Compagnie
                             </label>
-                            <input  class="form-control"  id="compagny" name="compagny" type="text" value="" required/>  
+                            <input  class="form-control"  id="compagny" name="compagny" type="text" value="${exp.compagny}" required/>  
                         </div>
                         <div class="form-group">
                             <label for="title">
                                 Titre
                             </label>
-                            <input  class="form-control"  id="title" name="title" type="text" value="" required/>  
+                            <input  class="form-control"  id="title" name="title" type="text" value="${exp.title}" required/>  
                         </div> 
                         <div  class="form-group">
                             <label for="start">
                                 Début
                             </label>
-                            <input  class="form-control"  id="start" name="start" type="text" value="yyyy-mm-dd" required/>  
+                            <input  class="form-control"  id="start" name="start" type="text" placeholder="yyyy-mm-dd" value="${exp.start}" required/>  
                         </div> 
                         <div  class="form-group">
                             <label for="end">
                                 Fin
                             </label>
-                            <input  class="form-control"  id="end" name="end" type="text" value="yyyy-mm-dd" required/>  
+                            <input  class="form-control"  id="end" name="end" type="text"  value="${exp.end}" placeholder="yyyy-mm-dd"  required/>  
                         </div>
                         <div class="form-group">
                             <label for="expContend">
@@ -39,16 +38,17 @@
                             </label>
 
 
-                            <textarea  id="editor1" class="form-control" name="expContend" form="addexp" row="10"></textarea>
+                            <textarea  id="editor1" class="form-control" name="expContend" form="addexp" row="10">
+                                ${exp.expContend}
+                            </textarea>
                         </div>
                         <div class="form-group">
                             <label> Technologie séparé par des virgules</label>
-                            <input class="form-control" type="text" name="technoListblock" required/>
+                            <input class="form-control" type="text" name="technoListblock" value="${techno}" required/>   
                         </div>
 
                         <input  class="btn btn-default"  type="submit" value="Ajouter" />
-                        <a  class="btn btn-default" href="<c:url value="/register/step3/${candidatId}"/>"  >Etape suivante</a>
-                    </form>
+                     </form>
                 </div>
             </div>
         </div>

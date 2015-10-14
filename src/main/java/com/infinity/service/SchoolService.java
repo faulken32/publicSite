@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -115,7 +116,7 @@ public class SchoolService {
         return version;
     }
 
-    public long addSchool(School school) throws JsonProcessingException {
+    public String addSchool(School school) throws JsonProcessingException {
 
         client = elasticClientConf.getClient();
 
@@ -128,8 +129,21 @@ public class SchoolService {
                 .execute()
                 .actionGet();
 
-        long version = response.getVersion();
+        String id = response.getId();
         client.admin().indices().prepareRefresh().execute().actionGet();
-        return version;
+        return id;
+    }
+    
+    
+     public void deleteById(String id) {
+
+        DeleteResponse response = client.prepareDelete(elasticClientConf.getINDEX_NAME(), "school", id)
+                .execute()
+                .actionGet();
+        
+          long version = response.getVersion();
+          
+        client.admin().indices().prepareRefresh().execute().actionGet();
+
     }
 }

@@ -120,6 +120,7 @@ public class ExpService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+         client.admin().indices().prepareRefresh().execute().actionGet();
         return version;
 
     }
@@ -138,16 +139,19 @@ public class ExpService {
                 .actionGet();
 
         String version = response.getId();
+         client.admin().indices().prepareRefresh().execute().actionGet();
         return version;
     }
 
-    public long deleteById(String id) {
+    public void deleteById(String id) {
 
         DeleteResponse response = client.prepareDelete(elasticClientConf.getINDEX_NAME(), "exp", id)
                 .execute()
                 .actionGet();
-
-        return response.getVersion();
+        
+          long version = response.getVersion();
+          
+        client.admin().indices().prepareRefresh().execute().actionGet();
 
     }
 

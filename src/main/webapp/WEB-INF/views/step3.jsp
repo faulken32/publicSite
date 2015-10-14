@@ -6,24 +6,26 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Ajoutez une nouvelle formation</div>
                 <div class="panel-body">
-                    <form id="addexp" method="post">               
+                    <form id="addexp" method="post">
+                        <!--<input type="hidden" name="update" value="${update}">-->
+                        
                         <div class="form-group">
                             <label for="school">
                                 Ecole
                             </label>
-                            <input  class="form-control"  id="school" name="school" type="text" value=""/>  
+                            <input  class="form-control"  id="school" name="school" type="text" value="${school.school}"/>  
                         </div>
                         <div class="form-group">
                             <label for="title">
                                 Titre
                             </label>
-                            <input  class="form-control"  id="title" name="title" type="text" value=""/>  
+                            <input  class="form-control"  id="title" name="title" type="text" value="${school.title}"/>  
                         </div> 
                         <div  class="form-group">
                             <label for="start">
                                 Année
                             </label>
-                            <input  class="form-control"  id="start" name="start" type="text" value=""/>  
+                            <input  class="form-control"  id="start" name="start" type="text" value="${school.start}"/>  
                         </div>                       
                         <div class="form-group">
                             <label for="sContend">
@@ -31,11 +33,9 @@
                             </label>
 
 
-                            <textarea id="editor1" class="form-control" name="sContend" form="addexp" row="10"></textarea>
+                            <textarea id="editor1" class="form-control" name="sContend" form="addexp" row="10">${school.sContend}</textarea>
                         </div>
-                        <input  class="btn btn-default"  type="submit" value="Ajouter" />
-                         <a class="btn btn-default" href="<c:url value="/candidat" />" >Terminer</a>
-                       
+                        <input  class="btn btn-default"  type="submit" value="Valider" />                                             
                     </form>
                 </div>
             </div>

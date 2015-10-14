@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -138,33 +140,60 @@ public class InscriptionController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         candidat.setEnterDate(simpleDateFormat.format(date));
         candidatService.updateOneById(candidat);
-        if("true".equals(update)){
-             url  = "redirect:/candidat";
+        if ("true".equals(update)) {
+            url = "redirect:/candidat";
         } else {
-            url  = "redirect:/register/step2/" + id;
+            url = "redirect:/register/step2/" + id;
         }
-     
+
         return url;
 
     }
 
-    @RequestMapping(value = {"/register/step2/{id}"}, method = RequestMethod.GET)
-    public ModelAndView step2(@PathVariable String id) {
+    @RequestMapping(value = {"/register/step2/{expId}/{update}", "/register/step2/{expId}", "/register/step2"}, method = RequestMethod.GET)
+    public ModelAndView step2(@PathVariable Optional<String> expId, @PathVariable Optional<String> update) throws IOException {
 
         ModelAndView mv = new ModelAndView("step2");
-        mv.addObject("candidatId", id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Users findByName = usersDao.findByName(name);
+
+        if (expId.isPresent()) {
+
+            Experiences byId = expService.getById(expId.get());
+            List<String> tecnoList = byId.getTecnoList();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String tecnoList1 : tecnoList) {
+
+                stringBuilder.append(tecnoList1).append(',');
+            }
+            int length = stringBuilder.length() - 1;
+            char charAt = stringBuilder.charAt(length);
+
+            if (charAt == ',') {
+                stringBuilder.deleteCharAt(length);
+            }
+
+            if (update.isPresent() && "true".equals(update.get())) {
+                mv.addObject("update", true);
+            } else {
+                mv.addObject("update", false);
+            }
+            mv.addObject("techno", stringBuilder);
+            mv.addObject("exp", byId);
+        }
+
+        mv.addObject("candidatId", findByName.getId());
+
         return mv;
     }
 
-    @RequestMapping(value = {"/register/step2/{candidatid}"}, method = RequestMethod.POST)
-    public String step2Form(@ModelAttribute Experiences exp, @PathVariable String candidatid, String technoListblock) throws JsonProcessingException, IOException, ParseException, InterruptedException, ExecutionException {
+    @RequestMapping(value = {"/register/step2/{expId}", "/register/step2"}, method = RequestMethod.POST)
+    public String step2Form(@ModelAttribute Experiences exp, @PathVariable Optional<String> expId, String technoListblock,
+            String update)
+            throws JsonProcessingException, IOException, ParseException, InterruptedException, ExecutionException {
 
-//        Candidat byId = candidatService.getById(id);
-//        
-//        PartialCandidat partialCandidat = new PartialCandidat();
-//        partialCandidat.setId(id);
-//        partialCandidat.setName(byId.getName());
-//        experiences.setPartialCandidat(partialCandidat);
         if (!technoListblock.isEmpty()) {
 
             String[] split = technoListblock.split(",");
@@ -174,7 +203,6 @@ public class InscriptionController {
 
         }
 
-        exp.setId(null);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = simpleDateFormat.parse(exp.getStart());
         Date end = simpleDateFormat.parse(exp.getEnd());
@@ -182,8 +210,13 @@ public class InscriptionController {
         long diff = end.getTime() - start.getTime();
         float nbYear = diff / 31536000000.0f;
 
-        Candidat candidat = candidatService.getById(candidatid);
-        candidat.setId(candidatid);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        Users findByName = usersDao.findByName(name);
+        Candidat candidat = candidatService.getById(findByName.getId());
+
+        candidat.setId(findByName.getId());
 
         PartialCandidat partialCandidat = new PartialCandidat();
         partialCandidat.setId(candidat.getId());
@@ -192,36 +225,97 @@ public class InscriptionController {
         exp.setDuration(nbYear);
         exp.setPartialCandidat(partialCandidat);
 
-        String addExp = expService.addExp(exp);
-        Experiences byId = expService.getById(addExp);
-        byId.setId(addExp);
-        expService.updateById(byId);
+        if ("true".equals(update)) {
 
-        return "redirect:/register/step3/" + candidatid;
+            exp.setId(expId.get());
+            expService.updateById(exp);
+
+        } else {
+            exp.setId(null);
+            String addExp = expService.addExp(exp);
+            //Experiences byId = expService.getById(addExp);
+            exp.setId(addExp);
+            expService.updateById(exp);
+        }
+
+        return "redirect:/candidat";
     }
 
-    @RequestMapping(value = {"/register/step3/{candidatid}"}, method = RequestMethod.GET)
-    public ModelAndView step3(@PathVariable String candidatid) {
+    @RequestMapping(value = {"/register/step3/{schoolId}", "/register/step3"}, method = RequestMethod.GET)
+    public ModelAndView step3(@PathVariable Optional<String> schoolId) {
 
         ModelAndView mv = new ModelAndView("step3");
-        mv.addObject("candidatId", candidatid);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Users findByName = usersDao.findByName(name);
+
+        if (schoolId.isPresent()) {
+
+            School byId = schoolService.getById(schoolId.get());
+            mv.addObject("school", byId);
+        }
+
+        mv.addObject("candidatId", findByName.getId());
 
         return mv;
     }
 
-    @RequestMapping(value = {"/register/step3/{candidatid}"}, method = RequestMethod.POST)
-    public String step3Form(@ModelAttribute("school") School school, @PathVariable String candidatid) throws JsonProcessingException, IOException {
+    @RequestMapping(value = {"/register/step3/{schoolId}", "/register/step3"}, method = RequestMethod.POST)
+    public String step3Form(@ModelAttribute("school") School school, @PathVariable Optional<String> schoolId) throws JsonProcessingException, IOException, InterruptedException, ExecutionException {
 
-        Candidat byId = candidatService.getById(candidatid);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Users findByName = usersDao.findByName(name);
+
         PartialCandidat partialCandidat1 = new PartialCandidat();
-        partialCandidat1.setId(candidatid);
-        partialCandidat1.setName(byId.getName());
+        partialCandidat1.setId(findByName.getId());
+        partialCandidat1.setName(name);
 
-        school.setPartialCandidat(partialCandidat1);
+        if (schoolId.isPresent()) {
+            
+            school.setPartialCandidat(partialCandidat1);
+            school.setId(schoolId.get());
+            schoolService.updateOneById(school);
+        } else {
 
-        schoolService.addSchool(school);
+            school.setPartialCandidat(partialCandidat1);
 
-        return "redirect:/register/step3/" + candidatid;
+            String addSchoolId = schoolService.addSchool(school);
+            school.setId(addSchoolId);
+            schoolService.updateOneById(school);
+
+        }
+
+        return "redirect:/candidat/";
+    }
+
+    @RequestMapping(value = {"/register/del/{expId}"}, method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity delExpbyId(@PathVariable String expId) throws IOException {
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            expService.deleteById(expId);
+            responseEntity = new ResponseEntity<>("OK ", HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            responseEntity = new ResponseEntity<>("error ", HttpStatus.BAD_REQUEST);
+        }
+        return responseEntity;
+    }
+    
+    
+    @RequestMapping(value = {"/register/del/school/{schoolId}"}, method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity delSchoolbyId(@PathVariable String schoolId) throws IOException {
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            schoolService.deleteById(schoolId);
+            responseEntity = new ResponseEntity<>("OK ", HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            responseEntity = new ResponseEntity<>("error ", HttpStatus.BAD_REQUEST);
+        }
+        return responseEntity;
     }
 
     private void authenticateUserAndSetSession(Users user, HttpServletRequest request) {

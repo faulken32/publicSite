@@ -80,5 +80,16 @@ public class UsersDao {
         return users;
 
     }
+    /**
+     * 
+     * @param name
+     * @return a user from db
+     */
+    public Users findByName(String name){
+    
+        return repository.findByname(name);
+        
+    }
+    
 
 }
