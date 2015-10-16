@@ -91,5 +91,13 @@ public class UsersDao {
         
     }
     
+    public void saveOrUpdate(Users users){
+    
+        
+        repository.save(users);
+    
+    
+    }
+    
 
 }

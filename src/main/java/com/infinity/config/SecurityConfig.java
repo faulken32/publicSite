@@ -38,13 +38,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 
                 .antMatchers("/register/**").access("hasRole('ROLE_USER')")
-                .antMatchers("/candidat/*").access("hasRole('ROLE_USER')")
+                .antMatchers("/candidat/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/signin/*").permitAll()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("name").passwordParameter("pass")
                 .and()
-                .logout().logoutSuccessUrl("/login?logout");
+                .logout()                                                          
+			.logoutUrl("/logout")                                              
+			.logoutSuccessUrl("/")                                          
+//			.logoutSuccessHandler(logoutSuccessHandler)                              
+			.invalidateHttpSession(true);                                      
+////			.addLogoutHandler(logoutHandler)                                        
+//			.deleteCookies(cookieNamesToClear)
+                
+             
 
     }
 }

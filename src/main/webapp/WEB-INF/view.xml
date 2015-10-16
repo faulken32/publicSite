@@ -28,6 +28,10 @@
     <definition name="pass" extends="default">
         <put-attribute name="title" value="changé votre mot de passe"/>
         <put-attribute name="body" value="/WEB-INF/views/pass.jsp" />
+    </definition> 
+    <definition name="home" extends="default">
+        <put-attribute name="title" value="Conexion"/>
+        <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
     </definition>        
     
     

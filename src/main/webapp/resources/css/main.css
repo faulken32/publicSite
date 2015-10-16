@@ -18,7 +18,10 @@ and open the template in the editor.
 
 
 }
+.big{
 
+    font-size: 65px;
+}
 
 .marginTop{  
     margin-top: 44px;        
@@ -32,11 +35,12 @@ and open the template in the editor.
 
     background: rgba(51,51,51,0.4);
     border: 1px solid transparent;
+    color: white;
 }
 
 .backgrondTrans{
 
-    background: rgba(51,51,51,0.4);
+
     border-radius: 3px;
     box-sizing: content-box;
     padding: 12px 17px;
@@ -55,6 +59,12 @@ and open the template in the editor.
     background-attachment: fixed, fixed;
     background-color: rgba(102,105,104,0.9);
     background-image : -webkit-radial-gradient(10% 0, farthest-side ellipse, rgba(102,105,104,0.9), rgba(93,112,119,0.89), rgba(160,174,150,0.9));
+
+}
+
+.white{
+
+    color: white;
 
 }
 
@@ -80,8 +90,53 @@ abbr
 }
 
 small{
-    
-   color: #C3BEBE!important;
-   
-   
+
+    color: #C3BEBE!important;
+
+
 }
+
+
+.navbar-default{
+
+
+    border-radius: 0px;
+    box-sizing: content-box;
+    padding: 0px 17px;
+    color: #f8f8f8;
+    background: rgba(51,51,51,0.4);
+    border: none;
+    position: relative;
+
+
+}
+.navbar-default .navbar-nav>li>a {
+
+    color: #C3BEBE;
+}
+
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    color: white;
+    background-color: transparent;
+}
+
+#home {
+    margin-top: 18px;
+
+}
+
+a , a:focus , a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+#home.row a  {
+    color: #999;
+}
+
+
+#home.row a:hover  {
+    color: white;
+}
+

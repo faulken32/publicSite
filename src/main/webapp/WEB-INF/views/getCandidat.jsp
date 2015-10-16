@@ -3,21 +3,23 @@
     <br>
     <br>
 
-    <div class="col-md-2 ">
-        <div class="col-md-12 center-block backgrondTrans">
-            menu    
-        </div>
-    </div>
+  
     <div class="col-md-1"></div>
-    <div class="col-md-8 ">
+    <div class="col-md-10 ">
         <div class="backgrondTrans">
-            <div >
-                <h4> Données personelles  <span id="modif" class="gray pull-right glyphicon glyphicon-pencil"></span>
-                    &nbsp;    &nbsp;
-                    <a class="pull-right gray"  role="button" title="changer de mot de passe" href="<c:url value="/candidat/changePass" />" >
+            <div class="row">
+                <div class="col-md-3"><h4>Données personelles</h4></div>
+                <div class="col-md-9 control">
+
+                    <a role="button" class="pull-right gray"  role="button" title="Modifier vos données" href="<c:url value="/register/step1/${candidat.id}/true"/>" >
+                        <i class="glyphicon glyphicon-pencil">  </i>
+                    </a>
+                    <a role="button" class="pull-right gray"  role="button" title="changer de mot de passe" href="<c:url value="/candidat/changePass" />" >
                         <i class="glyphicon glyphicon-lock"></i>
                     </a>
-                </h4>
+                </div>
+
+
             </div>
             <div>   
                 <div class="row gray">
@@ -67,9 +69,7 @@
                     </div>
                     <div class="col-md-9">
                     </div>
-
                 </div>
-
                 <div class="row">
                     <div class="col-md-3 gray">
                         <p>
@@ -79,7 +79,6 @@
                         </p>
                     </div>
                     <div class="col-md-9">
-
                     </div>
                 </div>
                 <div class="row">

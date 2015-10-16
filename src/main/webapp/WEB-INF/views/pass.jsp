@@ -6,7 +6,7 @@
     <div class="col-md-8">
 
         <div class="panel backgrondTrans">
-            <div class="panel-heading">Modification du mot de pass</div>
+            <div class="panel-heading">Modification du mot de passe</div>
             <div class="panel-body">
 
                 <c:if test="${errorOld}">
@@ -15,8 +15,15 @@
                     </div>
                 </c:if>
                 
-                 <c:if test="${errorOld}">
+                 <c:if test="${errorPass}">
                     <div class="alert alert-danger" aria-hidden="false" role="alert">Les 2 mots de pass ne correspondent pas 
+                    <!--<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                    </div>
+                </c:if>
+                
+                
+                  <c:if test="${succes}">
+                    <div class="alert alert-success" aria-hidden="false" role="alert">Modification enregistré 
                     <!--<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
                     </div>
                 </c:if>

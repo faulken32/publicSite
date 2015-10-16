@@ -39,8 +39,7 @@ public class CandidatController {
 
     @Autowired
     private ExpService expService;
-
-    
+  
     
     @Autowired
     private UsersDao usersDao;
@@ -51,9 +50,11 @@ public class CandidatController {
     
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String candidatRedirect() {
-
-        return "redirect:/candidat";
+    public ModelAndView candidatRedirect() {
+        
+        ModelAndView mv = new ModelAndView("home");
+        
+        return mv;
     }
 
     /**
@@ -138,8 +139,11 @@ public class CandidatController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
-        
+            boolean old = false;
+            boolean newOne = false;
          if (oldPass.equals(findByName.getPass())) {
+             
+             old = true;
              
          } else {
              modelAndView.addObject("errorOld", true);
@@ -147,8 +151,19 @@ public class CandidatController {
          
          if (!pass.equals(pass2)) {
              modelAndView.addObject("errorPass", true);
+         } else {
+             
+             newOne = true;
+         
          }
         
+         if (newOne && old) {
+             
+             findByName.setPass(pass);
+             usersDao.saveOrUpdate(findByName);
+             modelAndView.addObject("succes", true);
+         }
+         
         return modelAndView;
     }
 }
