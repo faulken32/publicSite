@@ -6,8 +6,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">${name}</div>
                 <div class="panel-body">
-                    <form id="step1" action="<c:url value="/register/step1/${candidat.id}" />"  method="post">
+
+
+
+                    <form id="step1" action="<c:url value="/register/step1" />"  method="post">
                         <input type="hidden" name="update" value="${update}" />
+                        <input type="hidden" name="enterDate" value="${candidat.enterDate}" />
+                        <input type="hidden" name="candidatId" value="${candidat.id}" />
                         <div class="form-group">
 
                             <label for="status">Statut</label>
@@ -15,7 +20,7 @@
                             <select name="status" class="form-control">
                                 <c:forEach items="${status}" var="status">
                                     <option value="${status.key}"
-                                            <c:if test="${status.key == 'listen'}">
+                                            <c:if test="${status.key == candidat.status}">
                                                 selected="selected"
                                             </c:if>
                                             >${status.value}</option>
@@ -45,29 +50,40 @@
                             <input class="form-control" type="number" name="preavis" name="preavis" value="${candidat.preavis}"/> 
                         </div>
                         <div class="containerM">
+                            <c:if test="${erroM}">
+                                <div class="alert alert-danger">pas de mobilité</div>
+                            </c:if>
                             <div class="form-group">
                                 <label for="pass">Mobilité (le ou les numéros de département dans lesquelles vous désirez travailler)</label> =>
                                 <div class="glyphicon glyphicon-plus" id="add"></div>
-                                <c:forEach items="${candidat.mobilite}" var="m">
-                                    
+                                <c:forEach items="${candidat.mobilite}" var="m">                                   
                                     <input class="form-control" name="mobilite" type="number" value="${m}" placeholder="Entrer un numéro de département"/>
                                     <br>
                                     <br>
                                 </c:forEach>
+
                             </div>
                         </div>
                         <div class="containerL">
+                            <c:if test="${erroL}">
+                                <div class="alert alert-danger"> pas de langues sélectionnée</div>
+
+                            </c:if>
                             <label>Langues</label>  
                             <div class="glyphicon glyphicon-plus" id="addL"></div>
                             <div class="form-group">
                                 <c:forEach items="${candidat.language}" var="l">
-                                <input class="form-control" name="language" type="text" value="${l}"/>
+                                    <input class="form-control" name="language" type="text" value="${l}"/>
                                 </c:forEach>
+
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="cvContends">
-                                Copier coller votre Cv (utiliser coller depuis word le cas échéant)
+                                Copier coller votre Cv (utiliser coller depuis word le cas échéant) 
+                                <br>
+                                <br>
+                                <p class="alert alert-danger">ATTENTION PAS DE NOM, ADRESSE, DE NUMERO DE TELEPHONE DANS VOTRE CV</p>
                             </label>
 
                             <textarea  id="editor1" class="form-control" name="cvContends" form="step1" row="30">${candidat.cvContends}</textarea>

@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -132,22 +133,82 @@ public class InscriptionController {
         return mv;
     }
 
-    @RequestMapping(value = {"/register/step1/{id}"}, method = RequestMethod.POST)
-    public String indexForm(@ModelAttribute Candidat candidat, @PathVariable String id, String update) throws JsonProcessingException {
+    @RequestMapping(value = {"/register/step1"}, method = RequestMethod.POST)
+    public <T extends Object> T indexForm(@ModelAttribute Candidat candidat, String update, String candidatId) throws JsonProcessingException {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        CandidatEnum candidatEnum = new CandidatEnum();
+        candidat.setId(candidatId);
 
         Date date = new Date();
         String url = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        candidat.setEnterDate(simpleDateFormat.format(date));
-        candidatService.updateOneById(candidat);
-        if ("true".equals(update)) {
-            url = "redirect:/candidat";
+        url = "redirect:/candidat";
+
+        boolean errorL = false;
+        boolean errorM = false;
+        ModelAndView mv = new ModelAndView("step1");
+        
+        mv.addObject("status", candidatEnum.getStatusList());
+        mv.addObject("selectedStatus", candidat.getStatus());
+        mv.addObject("name", name);
+        
+        if (candidat.getLanguage().isEmpty()) {
+            
+            errorL = true;
+            mv.addObject("erroL", errorL);
         } else {
-            url = "redirect:/register/step2/" + id;
+            
+            ArrayList<String> language = candidat.getLanguage();
+            
+            for (Iterator<String> iterator = language.iterator(); iterator.hasNext();) {
+                if(iterator.next().isEmpty()){
+                    iterator.remove();
+                }
+                
+            }
+//            for (String language1 : language) {
+//                
+//                if(language1.isEmpty()){
+//                    language.remove(language1);
+//                }
+//            }
+            candidat.setLanguage(language);
         }
 
-        return url;
+        if (candidat.getMobilite().isEmpty()) {
+            errorM = true;
+            mv.addObject("erroM", errorM);
+        } else {
+        
+            List mobilite = candidat.getMobilite();
+            for (Iterator<String> iterator = mobilite.iterator(); iterator.hasNext();) {
+                
+                if(iterator.next().isEmpty()){
+                    iterator.remove();
+                }
+                
+            }
+            candidat.setMobilite(mobilite);
+        }
 
+        if (errorL || errorM) {
+
+            return (T) mv;
+
+        } else {
+
+            if (!update.isEmpty() && "true".equals(update)) {
+                candidat.setUpdateDate(simpleDateFormat.format(date));
+            } else {
+                candidat.setEnterDate(simpleDateFormat.format(date));
+            }
+            candidatService.updateOneById(candidat);
+            return (T) url;
+        }
+
+//        mv.addObject("error", res);
     }
 
     @RequestMapping(value = {"/register/step2/{expId}/{update}", "/register/step2/{expId}", "/register/step2"}, method = RequestMethod.GET)
@@ -272,7 +333,7 @@ public class InscriptionController {
         partialCandidat1.setName(name);
 
         if (schoolId.isPresent()) {
-            
+
             school.setPartialCandidat(partialCandidat1);
             school.setId(schoolId.get());
             schoolService.updateOneById(school);
@@ -302,8 +363,7 @@ public class InscriptionController {
         }
         return responseEntity;
     }
-    
-    
+
     @RequestMapping(value = {"/register/del/school/{schoolId}"}, method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity delSchoolbyId(@PathVariable String schoolId) throws IOException {
 
