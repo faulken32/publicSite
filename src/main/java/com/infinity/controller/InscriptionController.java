@@ -168,12 +168,6 @@ public class InscriptionController {
                 }
                 
             }
-//            for (String language1 : language) {
-//                
-//                if(language1.isEmpty()){
-//                    language.remove(language1);
-//                }
-//            }
             candidat.setLanguage(language);
         }
 

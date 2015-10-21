@@ -40,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/candidat/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/signin/*").permitAll()
+                .antMatchers("/recrutor/signin/*").permitAll()
+                .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("name").passwordParameter("pass")

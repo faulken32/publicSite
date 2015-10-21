@@ -96,6 +96,11 @@ small{
 
 }
 
+.error{
+    
+    color: red;
+    
+}
 
 .navbar-default{
 
@@ -138,5 +143,12 @@ a , a:focus , a:hover{
 
 #home.row a:hover  {
     color: white;
+}
+
+
+.grayKbd {
+    
+    color: #fff;
+    background-color: #818281;
 }
 

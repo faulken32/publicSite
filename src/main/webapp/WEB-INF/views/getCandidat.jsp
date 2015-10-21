@@ -63,7 +63,7 @@
                         <p>
                             <c:forEach items="${candidat.mobilite}" var="m">
 
-                                <kbd>${m}</kbd>
+                                <kbd class="grayKbd">${m}</kbd>
                             </c:forEach>
                         </p>
                     </div>

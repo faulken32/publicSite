@@ -48,20 +48,12 @@
                         </div>
 
                         <input  class="btn btn-default"  type="submit" value="Ajouter" />
-                     </form>
+                    </form>
                 </div>
             </div>
         </div>
         <div class="col-md-2"></div>
     </div>
-
-    <!--            <div class="row row2">
-                    <div class="col-md-12 footer">
-                        <p>
-                            SARL Infinity web 809 840 119
-                            CopyRight Infinity web 2015 tous Droit réservés</p>
-                    </div>
-                </div>-->
 </div>
 
 
@@ -70,19 +62,33 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        
-        
+
+
         CKEDITOR.replace('editor1');
         $("#start").datepicker({
-            
             dateFormat: "yy-mm-dd",
-            regional: "fr" 
-        });
-        
-        
-         $("#end").datepicker({
            
+        });
+
+
+        $("#end").datepicker({
             dateFormat: "yy-mm-dd"
+        });
+
+
+        $("#addexp").validate({
+            rules: {
+                // no quoting necessary
+                start: {required: true,
+                    dateISO: true,
+                    dateFormat: "yyyy-dd-mm"
+                },
+                end: {required: true,
+                    dateISO: true,
+                    dateFormat: "yyyy-dd-mm"
+                }
+
+            }
         });
 
     });

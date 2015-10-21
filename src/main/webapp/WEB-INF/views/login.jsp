@@ -5,6 +5,13 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <div class="panel backgrondTrans">
+            <c:if test="${param.error !=null}">
+
+                <div class="alert alert-danger alert-dismissable">Couple Utilisateur/mot de pass invalide! Avez-vous créer un compte ?
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>    
+
+            </c:if>
             <div class="panel-heading">Connecter vous</div>
             <div class="panel-body">
                 <form id="login" method="post">
@@ -20,7 +27,7 @@
                 <div>
                     <p>
                         <a href="">
-                           Mot de passe oublié ? </a>    
+                            Mot de passe oublié ? </a>    
                     </p>
                 </div>
             </div>
@@ -35,9 +42,14 @@
     $(document).ready(function () {
 
 
-//                $('.load').transition({opacity: 1}, 1500);
-
-//        $('#step1').validate();
+        $("#login").validate({
+            rules: {
+                // no quoting necessary
+                pass: {
+                    required: true,
+                }
+            }
+        });
 
 
     });
