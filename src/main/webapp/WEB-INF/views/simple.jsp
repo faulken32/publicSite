@@ -13,18 +13,18 @@
         <div class="panel panel-default">
             <div class="panel-heading">Administratives</div>
             <div class="panel-body">
-                <form id="step1" method="post">
+                <form id="step1"  method="post">
                     <div class="form-group">
                         <label for="pass">Email</label>
-                        <input type="email" class="form-control" id="pass" name="name" placeholder="" required>
+                        <input type="email" class="form-control" id="emailLogin" name="name" placeholder="" required>
                     </div>
                     <div class="form-group">
                         <label for="pass">Mot de pass</label>
-                        <input type="password" class="form-control" id="pass" name="pass" placeholder="" required>
+                        <input type="password" class="form-control" id="pass" name="pass" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="pass">Rétaper votre mot de pass</label>
-                        <input type="password" class="form-control" id="pass" name="pass2" placeholder="" required>
+                        <label for="pass2">Rétaper votre mot de pass</label>
+                        <input type="password" class="form-control" id="pass2" name="pass2" placeholder="">
                     </div>
                     <input type="submit" class="btn btn-default" />
                 </form>
@@ -35,20 +35,19 @@
 </div>
 
 <script type="text/javascript" src=" <c:url  value="/resources/js/jquery-validation/dist/jquery.validate.min.js" />"></script>
+<script type="text/javascript" src=" <c:url  value="/resources/js/jquery-validation/dist/additional-methods.min.js" />"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
 
         $('#step1').validate({
             rules: {
-                // no quoting necessary
+               
                 pass: {
                     required: true,
-                    minlength: 8
+                    minlength: 1
                 },
-                pass2: {
-                    required: true,
-                    minlength: 8,
+                pass2: {                                   
                     equalTo: "#pass"
                 }
             }

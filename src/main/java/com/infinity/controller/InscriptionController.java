@@ -6,6 +6,7 @@
 package com.infinity.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infinity.controller.abstractC.AController;
 import com.infinity.dao.UsersDao;
 import com.infinity.dto.Candidat;
 import com.infinity.dto.CandidatEnum;
@@ -29,18 +30,13 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author t311372
  */
 @Controller
-public class InscriptionController {
+public class InscriptionController  extends AController{
 
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionController.class);
 
@@ -68,10 +64,7 @@ public class InscriptionController {
     @Autowired
     private UsersDao usersDao;
 
-//    @Autowired
-//    protected AuthenticationManager authenticationManager;
-    @Autowired
-    protected AuthenticationManagerBuilder authenticationManager;
+
 
     @RequestMapping(value = {"/signin"}, method = RequestMethod.GET)
     public ModelAndView simpleInscription() {
@@ -91,13 +84,13 @@ public class InscriptionController {
      * @return
      */
     @RequestMapping(value = {"/signin"}, method = RequestMethod.POST)
-    public <T extends Object> T simpleInscriptionPost(String name, String pass, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public <T extends Object> T simpleInscriptionPost(String name, String pass, HttpServletRequest request) throws IOException {
 
         String res = null;
 
         try {
             Users saveUser = usersDao.saveUser(name, pass);
-            this.authenticateUserAndSetSession(saveUser, request);
+            super.authenticateUserAndSetSession(saveUser, request);
             return (T) ((T) "redirect:/register/step1/" + saveUser.getId());
 
         } catch (UserException ex) {
@@ -170,27 +163,21 @@ public class InscriptionController {
             }
             candidat.setLanguage(language);
         }
-
         if (candidat.getMobilite().isEmpty()) {
             errorM = true;
             mv.addObject("erroM", errorM);
-        } else {
-        
+        } else {      
             List mobilite = candidat.getMobilite();
             for (Iterator<String> iterator = mobilite.iterator(); iterator.hasNext();) {
                 
                 if(iterator.next().isEmpty()){
                     iterator.remove();
-                }
-                
+                }                
             }
             candidat.setMobilite(mobilite);
         }
-
         if (errorL || errorM) {
-
             return (T) mv;
-
         } else {
 
             if (!update.isEmpty() && "true".equals(update)) {
@@ -201,8 +188,6 @@ public class InscriptionController {
             candidatService.updateOneById(candidat);
             return (T) url;
         }
-
-//        mv.addObject("error", res);
     }
 
     @RequestMapping(value = {"/register/step2/{expId}/{update}", "/register/step2/{expId}", "/register/step2"}, method = RequestMethod.GET)
@@ -372,26 +357,5 @@ public class InscriptionController {
         return responseEntity;
     }
 
-    private void authenticateUserAndSetSession(Users user, HttpServletRequest request) {
-
-        try {
-
-            String username = user.getName();
-            String password = user.getPass();
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-
-            // generate session if one doesn't exist
-            request.getSession();
-
-            token.setDetails(new WebAuthenticationDetails(request));
-
-            AuthenticationManager object = authenticationManager.getObject();
-            Authentication authenticateUser = object.authenticate(token);
-
-            SecurityContextHolder.getContext().setAuthentication(authenticateUser);
-
-        } catch (Exception ex) {
-            LOG.error(ex.getMessage());
-        }
-    }
+  
 }

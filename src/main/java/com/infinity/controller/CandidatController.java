@@ -5,12 +5,13 @@
  */
 package com.infinity.controller;
 
+import com.infinity.controller.abstractC.AController;
 import com.infinity.dao.UsersDao;
 import com.infinity.dto.Candidat;
 import com.infinity.dto.Experiences;
 import com.infinity.dto.School;
 import com.infinity.entity.Users;
-import com.infinity.repository.UserRepository;
+
 import com.infinity.service.CandidatService;
 import com.infinity.service.ExpService;
 import com.infinity.service.SchoolService;
@@ -30,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author t311372
  */
 @Controller
-public class CandidatController {
+public class CandidatController extends AController{
 
     private static final Logger LOG = LoggerFactory.getLogger(CandidatController.class);
 
@@ -38,8 +39,7 @@ public class CandidatController {
     private CandidatService candidatService;
 
     @Autowired
-    private ExpService expService;
-  
+    private ExpService expService; 
     
     @Autowired
     private UsersDao usersDao;
@@ -52,6 +52,8 @@ public class CandidatController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView candidatRedirect() {
         
+        
+        super.setAuth();
         ModelAndView mv = new ModelAndView("home");
         
         return mv;
@@ -78,34 +80,26 @@ public class CandidatController {
         ArrayList<School> schoolList = schoolService.getByIdSearhText(findByname.getId());
 
         if (byIdSearhText.isEmpty()) {
-
             noExp = true;
-
         } else {
-
             noExp = false;
             mv.addObject("exp", byIdSearhText);
         }
 
         if (schoolList.isEmpty()) {
-
             noSchool = true;
-
         } else {
 
             noSchool = false;
             mv.addObject("school", schoolList);
         }
-
         mv.addObject("noExp", noExp);
         mv.addObject("noSchool", noSchool);
-
         if (candidat == null) {
             throw new Exception("missing candidat");
         }
-
         if ("listen".equals(candidat.getStatus())) {
-            candidat.setStatus("à l'écoute du marché");
+           candidat.setStatus("à l'écoute du marché");
         }
         if ("active".equals(candidat.getStatus())) {
             candidat.setStatus("en recherche active");
@@ -151,12 +145,9 @@ public class CandidatController {
          
          if (!pass.equals(pass2)) {
              modelAndView.addObject("errorPass", true);
-         } else {
-             
-             newOne = true;
-         
-         }
-        
+         } else {             
+             newOne = true;         
+         }       
          if (newOne && old) {
              
              findByName.setPass(pass);
