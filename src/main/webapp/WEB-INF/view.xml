@@ -40,5 +40,13 @@
     <definition name="recrutorStep1" extends="default">
         <put-attribute name="title" value="admistratif"/>
         <put-attribute name="body" value="/WEB-INF/views/recrutorStep1.jsp"/>
-    </definition>          
+    </definition>       
+     <definition name="recrutorStep2" extends="default">
+        <put-attribute name="title" value="Ajoutez une annonce"/>
+        <put-attribute name="body" value="/WEB-INF/views/recrutorStep2.jsp"/>
+    </definition>
+       
+          
+             
+                   
 </tiles-definitions>

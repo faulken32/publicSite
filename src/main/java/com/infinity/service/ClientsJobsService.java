@@ -138,6 +138,33 @@ public class ClientsJobsService {
     }
     
     
+    public ArrayList<ClientOffers> getAllByClientId(String id) throws IOException {
+
+        client = elasticClientConf.getClient();
+
+        QueryBuilder qb = QueryBuilders.matchQuery("partialsClients.id", id);
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
+                .setTypes("jobs")
+                .setQuery(qb) // Query
+                .execute()
+                .actionGet();
+
+        SearchHit[] hits = response.getHits().getHits();
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<ClientOffers> ClientOffersList = new ArrayList<>();
+
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                ClientOffers readValue = mapper.readValue(hit.getSourceAsString(), ClientOffers.class);
+                readValue.setId(hit.getId());
+                ClientOffersList.add(readValue);
+            }
+        }
+        return ClientOffersList;
+
+    }
+    
+    
 //     public ClientOffers getByClientId() throws IOException {
 //
 //        client = elasticClientConf.getClient();

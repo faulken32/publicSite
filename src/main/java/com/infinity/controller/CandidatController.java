@@ -115,7 +115,7 @@ public class CandidatController extends AController{
     }
 
     
-    @RequestMapping(value = {"/candidat/changePass"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/candidat/changePass" , "/recrutor/changePass"}, method = RequestMethod.GET)
     public ModelAndView candidatChangePass() throws Exception {
 
         ModelAndView modelAndView = new ModelAndView("pass");
@@ -124,15 +124,15 @@ public class CandidatController extends AController{
     }
     
     
-     @RequestMapping(value = {"/candidat/changePass"}, method = RequestMethod.POST)
+     @RequestMapping(value = {"/candidat/changePass" , "/recrutor/changePass"}, method = RequestMethod.POST)
     public ModelAndView candidatChangePassPost(String oldPass, String pass , String pass2) throws Exception {
 
         
         ModelAndView modelAndView = new ModelAndView("pass");
+        super.setAuth();
         
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Users findByName = usersDao.findByName(name);
+      
+        Users findByName = usersDao.findByName(super.authName);
             boolean old = false;
             boolean newOne = false;
          if (oldPass.equals(findByName.getPass())) {

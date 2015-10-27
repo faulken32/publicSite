@@ -7,6 +7,7 @@
     <div class="col-md-8 backgrondTrans">
 
         <form id="comments" method="post">
+            <input type="hidden" name="id" value="${client.id}" /> 
             <div class="form-group">
                 Nom du client
                 <input  class="form-control" type="text" name="name" value="${client.name}"/>            
@@ -20,7 +21,7 @@
                 Téléphone
                 <input  class="form-control" type="text" name="phone" value="${client.phone}"/>            
             </div>
-            <input class="btn btn-default" type="submit" value="Ajouter" />
+            <input class="btn btn-default" type="submit" value="Valider" />
         </form>
     </div>
     <div class="col-md-2"></div>

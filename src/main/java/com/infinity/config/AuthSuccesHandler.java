@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author t311372
  */
+@Component
 public class AuthSuccesHandler implements AuthenticationSuccessHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
@@ -34,19 +37,20 @@ public class AuthSuccesHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private UsersDao usersDao;
+   
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
         LOG.debug("SUCESS");
 
         User principal = (User) authentication.getPrincipal();
-        if(principal != null && principal.getUsername() != null){
-            
-            this.setUserIdInSession(request, usersDao.findByName(principal.getUsername()));
-            
+        if(principal != null && principal.getUsername() != null){                                
+             this.setUserIdInSession(request, usersDao.findByName(principal.getUsername()));            
         } 
-        
-        String targetUrl = determineTargetUrl(authentication);
+       
+       
+        String targetUrl = determineTargetUrl(request,  authentication);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -54,10 +58,11 @@ public class AuthSuccesHandler implements AuthenticationSuccessHandler {
      * Builds the target URL according to the logic defined in the main class
      * Javadoc.
      *
+     * @param request
      * @param authentication
      * @return
      */
-    protected String determineTargetUrl(Authentication authentication) {
+    protected String determineTargetUrl(HttpServletRequest request,Authentication authentication) {
         boolean isUser = false;
         boolean isClient = false;
 
@@ -75,9 +80,10 @@ public class AuthSuccesHandler implements AuthenticationSuccessHandler {
         }
 
         if (isUser) {
-
+            
             return "/candidat";
         } else if (isClient) {
+               request.getSession().setAttribute("authType", "client");
             return "/recrutor/info";
         } else {
             throw new IllegalStateException();
@@ -91,7 +97,7 @@ public class AuthSuccesHandler implements AuthenticationSuccessHandler {
      * @param saveUser
      */
     protected void setUserIdInSession(HttpServletRequest request, Users saveUser) {
-
+        
         request.getSession().setAttribute(CLIENT_ID, saveUser.getId());
 
     }

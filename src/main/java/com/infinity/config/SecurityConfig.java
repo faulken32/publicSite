@@ -32,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
     private  BasicDataSource dataSource;
+    
+    @Autowired
+    private AuthSuccesHandler authSuccesHandler;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -55,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin().loginPage("/login").failureUrl("/login?error")
-                .successHandler(new AuthSuccesHandler())
+                .successHandler(authSuccesHandler)
                 .usernameParameter("name").passwordParameter("pass")
          
                 .and()

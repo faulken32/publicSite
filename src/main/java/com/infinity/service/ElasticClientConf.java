@@ -77,9 +77,8 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet()  {
         client = new TransportClient()
-                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9300))
-                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9301))
-                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9302));
+                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9300));
+              
 
 
         LOG.info("client créated");

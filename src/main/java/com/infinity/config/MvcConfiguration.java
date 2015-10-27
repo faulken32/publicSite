@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -35,7 +36,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.infinity"})
-@Import({ SecurityConfig.class })
+@Import({SecurityConfig.class})
 @PropertySource("classpath:application.properties")
 @EnableJpaRepositories(basePackages = "com.infinity.repository")
 
@@ -44,9 +45,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
 
     private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<>();
-    
-    
-     @Value("${jdbc.url}")
+
+    @Value("${jdbc.url}")
     private String url;
 
     @Value("${jdbc.username}")
@@ -54,29 +54,21 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Value("${jdbc.password}")
     private String password;
-    
-     @Value("${jdbc.auto}")
+
+    @Value("${jdbc.auto}")
     private String auto;
-    
-    
-    
+
     static {
 
         DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/tiles.xml");
         DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/view.xml");
     }
 
-//    @Bean
-//    public TilesViewResolver tilesViewResolver() {
-//        return new TilesViewResolver();
-//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
-
-
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -89,42 +81,39 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 //        return new StandardServletMultipartResolver();
 //    }
 //    
-
     @Bean
-    public UrlBasedViewResolver viewResolver(){
-    
+    public UrlBasedViewResolver viewResolver() {
+
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
 //        urlBasedViewResolver.setCache(false);
         urlBasedViewResolver.setViewClass(TilesView.class);
-        
+
         return urlBasedViewResolver;
     }
-    
-    
+
     @Bean(name = "dataSource")
-    public BasicDataSource dataSource()  {
+    public BasicDataSource dataSource() {
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-     
 
         return dataSource;
 
     }
-    
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
-        
+
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.hbm2ddl.auto", this.auto);
-        properties.setProperty("hibernate.show_sql", "true");                           
+        properties.setProperty("hibernate.show_sql", "true");
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         factory.setPersistenceUnitName("PU");
@@ -134,23 +123,27 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         factory.setDataSource(dataSource());
         factory.setJpaProperties(properties);
         factory.afterPropertiesSet();
-        
-        
+
         return factory;
 
     }
-    
-     @Bean 
-    public JpaTransactionManager transactionManager(EntityManagerFactory emf) throws SQLException{
-        
+
+    @Bean
+    public JpaTransactionManager transactionManager(EntityManagerFactory emf) throws SQLException {
+
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(emf);
-        
-        
+
         return jpaTransactionManager;
-    
+
     }
-    
+
+//    @Bean
+//    public AuthSuccesHandler authSuccesHandler() {
+//
+//        return new AuthSuccesHandler();
+//    }
+
 //    /**
 //     *
 //     * @return
@@ -162,10 +155,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 //        resourceBundleViewResolver.setBasename("views");
 //        return resourceBundleViewResolver; 
 //    }
-    
-   
-
-    
     @Bean
     public TilesConfigurer tilesConfigurer() {
 
