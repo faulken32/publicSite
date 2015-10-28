@@ -58,6 +58,34 @@ and open the template in the editor.
     position: relative;
 }
 
+#home .backgrondTrans{
+
+
+    border-radius: 3px;
+   box-sizing: inherit;
+    padding: 12px 17px;
+    color: #f8f8f8;
+    background: rgba(51,51,51,0.4);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+#home .backgrondTransWhite{
+
+
+    border-radius: 3px;
+   box-sizing: inherit;
+    padding: 12px 17px;
+    color: #000000;
+    background: rgba(51,51,51,0.4);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+#home .btn {
+    
+    margin-left: 15px;
+}
 
 .gray{
     color: #d2d2d2;

@@ -45,7 +45,7 @@
                
                 pass: {
                     required: true,
-                    minlength: 1
+                    minlength: 8
                 },
                 pass2: {                                   
                     equalTo: "#pass"

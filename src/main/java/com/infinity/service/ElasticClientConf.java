@@ -24,20 +24,17 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
     private TransportClient client;
     private static final Logger LOG = LoggerFactory
             .getLogger(ElasticClientConf.class);
-    
-    
+
     @Value("${ES_IP1}")
     private String ES_IP1;
-    
+
     @Value("${INDEX_NAME}")
     private String INDEX_NAME;
 
     public String getINDEX_NAME() {
         return INDEX_NAME;
     }
-    
-    
-   
+
     public TransportClient getClient() {
         return client;
     }
@@ -67,19 +64,21 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
 //    }
     @Override
     public void destroy() {
-        
-        if(client != null){
-                client.close();
+
+        if (client != null) {
+            client.close();
         }
-    
+
     }
 
     @Override
-    public void afterPropertiesSet()  {
+    public void afterPropertiesSet() {
         client = new TransportClient()
-                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9300));
-              
-
+                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9300))
+                .
+                addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9301))
+                .
+                addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9302));
 
         LOG.info("client créated");
     }

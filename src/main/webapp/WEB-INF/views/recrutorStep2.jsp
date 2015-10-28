@@ -7,8 +7,22 @@
     <div class="col-md-1"></div>
     <div class="col-md-10 well">
         <h2>Ajouter une annonce</h2>
+        <br />
+        <br />
         <form id="addDesc" method="post">
             <input name="id" type="hidden" value="${jobs.id}"/>  
+
+            <label for="publish">
+                Publier sur le site ?
+            </label>
+            <p> 
+                
+                <input  class=""  name="publish" type="checkbox" 
+                        <c:if test="${jobs.publish}">
+                            checked="true"
+                        </c:if>
+                        />  
+            </p>
             <div class="form-group">
                 <label for="compagny">
                     Titre
@@ -47,7 +61,7 @@
             </div>
             <input  class="btn btn-default"  type="submit" value="Ok"/>
             <br />
-             <br />
+            <br />
         </form>
         <div>
             <p>
@@ -157,7 +171,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-
                             <input class="btn btn-default" type="submit" value="OK"/>
                         </div>
                     </form>

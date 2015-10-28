@@ -45,6 +45,14 @@
         <put-attribute name="title" value="Ajoutez une annonce"/>
         <put-attribute name="body" value="/WEB-INF/views/recrutorStep2.jsp"/>
     </definition>
+     <definition name="cerebros" extends="default">
+        <put-attribute name="title" value="home p"/>
+        <put-attribute name="body" value="/WEB-INF/views/cerebros.jsp"/>
+    </definition>   
+     <definition name="homeRecrutor" extends="default">
+        <put-attribute name="title" value="home p"/>
+        <put-attribute name="body" value="/WEB-INF/views/homeRecrutor.jsp"/>
+    </definition>
        
           
              

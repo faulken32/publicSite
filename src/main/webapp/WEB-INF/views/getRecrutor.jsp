@@ -82,7 +82,7 @@
                                 </a>
                             </div>
                             <div><h4>
-                                    ${exp.title}
+                                    ${exp.title} ${exp.lastUpdateDate} <c:if test="${exp.publish}"> Publier </c:if>
                                 </h4>
                             </div>
                             <div id="c${exp.id}" class="collapse">

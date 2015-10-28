@@ -49,13 +49,14 @@ public class CandidatController extends AController{
     
     
 
-    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public ModelAndView candidatRedirect() {
+   
+    
+    @RequestMapping(value = {"/home/candidat"}, method = RequestMethod.GET)
+    public ModelAndView homeCandidat() {
         
         
-        super.setAuth();
         ModelAndView mv = new ModelAndView("home");
-        
+            
         return mv;
     }
 

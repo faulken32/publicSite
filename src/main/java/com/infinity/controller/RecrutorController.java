@@ -7,18 +7,18 @@ import com.infinity.dto.ClientOffers;
 import com.infinity.dto.Clients;
 import com.infinity.dto.PartialsClients;
 import com.infinity.dto.TechnoCriteria;
-import com.infinity.dto.partialFromModel.PartialClientOffers;
 import com.infinity.entity.Users;
 import com.infinity.exception.UserException;
 import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ClientsService;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,13 @@ public class RecrutorController extends AController {
     public ModelAndView simpleInscription() {
 
         ModelAndView mv = new ModelAndView("simple");
+        return mv;
+    }
+
+    @RequestMapping(value = {"/home/recrutor"}, method = RequestMethod.GET)
+    public ModelAndView homeRecrutor() {
+
+        ModelAndView mv = new ModelAndView("homeRecrutor");
         return mv;
     }
 
@@ -117,7 +124,7 @@ public class RecrutorController extends AController {
     }
 
     @RequestMapping(value = {"/recrutor/step2/{jobId}", "/recrutor/step2"}, method = RequestMethod.GET)
-    public ModelAndView step2(HttpServletRequest request,@PathVariable Optional<String> jobId) throws IOException {
+    public ModelAndView step2(HttpServletRequest request, @PathVariable Optional<String> jobId) throws IOException {
 
         String attribute;
         ClientOffers byId = null;
@@ -137,36 +144,38 @@ public class RecrutorController extends AController {
     }
 
     @RequestMapping(value = {"/recrutor/step2/{jobId}", "/recrutor/step2"}, method = RequestMethod.POST)
-    public ModelAndView step2Post(HttpServletRequest request,@PathVariable Optional<String> jobId, @ModelAttribute ClientOffers clientOffers) throws IOException, InterruptedException, ExecutionException {
+    public ModelAndView step2Post(HttpServletRequest request, @PathVariable Optional<String> jobId, @ModelAttribute ClientOffers clientOffers) throws IOException, InterruptedException, ExecutionException {
 
         String attribute;
         ClientOffers fromDb = null;
         ModelAndView mv = new ModelAndView("recrutorStep2");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-dd-MM");
+        Date date = new Date();
+        String format = simpleDateFormat.format(date);
+        
         if (request.getSession() != null) {
 
             attribute = (String) request.getSession().getAttribute(CLIENT_ID);
 
             if (jobId.isPresent()) {
-                
-                
+
                 fromDb = clientsJobsService.getById(jobId.get());
+                clientOffers.setLastUpdateDate(format);
                 clientOffers.setPartialsClients(fromDb.getPartialsClients());
-                clientOffers.setTechnoCriterias(fromDb.getTechnoCriterias());              
+                clientOffers.setTechnoCriterias(fromDb.getTechnoCriterias());
                 clientsJobsService.updateOneById(clientOffers);
-                
-                
+
                 mv.addObject("jobs", clientOffers);
             } else {
-                if (clientOffers != null && clientOffers.getId() == null) {
-
+                if (clientOffers != null) {
+                    clientOffers.setLastUpdateDate(format);
                     String addJobs = clientsJobsService.addJobs(clientOffers);
                     clientOffers.setId(addJobs);
                     PartialsClients partialsClients = new PartialsClients();
                     partialsClients.setId(attribute);
                     clientOffers.setPartialsClients(partialsClients);
                     clientsJobsService.updateOneById(clientOffers);
-                                       
-                    
+
                     mv.addObject("jobs", clientOffers);
                 }
             }
@@ -175,23 +184,21 @@ public class RecrutorController extends AController {
 
         return mv;
     }
-    
+
     @RequestMapping(value = {"/recrutor/step2/criteria/updateAdd/{offerId}/{clienId}"}, method = RequestMethod.POST)
     public String addOrUpdateCriteria(@ModelAttribute ClientOffers clientOffers,
             @PathVariable String clienId,
             @PathVariable String offerId, @ModelAttribute TechnoCriteria technoCriteria) throws IOException, InterruptedException, ExecutionException {
 
         ClientOffers jobs = clientsJobsService.getById(offerId);
-        
-        if(jobs != null && jobs.getTechnoCriterias() == null){
-           
-            
+
+        if (jobs != null && jobs.getTechnoCriterias() == null) {
+
             jobs.setTechnoCriterias(new ArrayList<>());
         }
-        
-        
-        if (jobs != null && jobs.getTechnoCriterias() != null) {                                                             
-            
+
+        if (jobs != null && jobs.getTechnoCriterias() != null) {
+
             if (jobs.getTechnoCriterias().isEmpty()) {
 
                 ArrayList<TechnoCriteria> technoList = new ArrayList<>();
@@ -207,13 +214,11 @@ public class RecrutorController extends AController {
                 clientsJobsService.updateOneById(jobs);
             }
 
-            
-        } 
-        return "redirect:/recrutor/step2/"+offerId;
+        }
+        return "redirect:/recrutor/step2/" + offerId;
     }
-    
-    
-     @RequestMapping(value = {"/recrutor/step2/criteria/techno/update/{offerId}/{clienId}"}, method = RequestMethod.POST)
+
+    @RequestMapping(value = {"/recrutor/step2/criteria/techno/update/{offerId}/{clienId}"}, method = RequestMethod.POST)
     public String UpdateCriteriaTechnoList(HttpServletRequest request, @PathVariable String offerId) throws IOException, InterruptedException, ExecutionException {
 
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -246,7 +251,7 @@ public class RecrutorController extends AController {
         fromDb.setTechnoCriterias(technoList);
         clientsJobsService.updateOneById(fromDb);
 
-        return "redirect:/recrutor/step2/"+offerId;
+        return "redirect:/recrutor/step2/" + offerId;
     }
 
 }

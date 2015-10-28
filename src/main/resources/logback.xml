@@ -15,8 +15,13 @@ and open the template in the editor.
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
-
-  <root level="DEBUG">
+ <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/home/logs/public.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+  <root level="ERROR">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

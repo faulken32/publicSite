@@ -9,8 +9,10 @@ import com.infinity.dto.ClientOffers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infinity.dto.Candidat;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -18,9 +20,12 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
+import static org.elasticsearch.search.sort.SortOrder.DESC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +39,12 @@ public class ClientsJobsService {
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
-    
-    
+
     /**
-     * 
+     *
      * @param clientOffers
      * @return
-     * @throws JsonProcessingException 
+     * @throws JsonProcessingException
      */
     public String addJobs(ClientOffers clientOffers) throws JsonProcessingException {
 
@@ -59,14 +63,14 @@ public class ClientsJobsService {
         client.admin().indices().prepareRefresh().execute().actionGet();
         return id;
     }
-    
+
     /**
-     * 
+     *
      * @param jobs
      * @return
      * @throws IOException
      * @throws InterruptedException
-     * @throws ExecutionException 
+     * @throws ExecutionException
      */
     public long updateOneById(ClientOffers jobs) throws IOException, InterruptedException, ExecutionException {
 
@@ -83,7 +87,7 @@ public class ClientsJobsService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
-         client.admin().indices().prepareRefresh().execute().actionGet();
+        client.admin().indices().prepareRefresh().execute().actionGet();
 
         return version;
     }
@@ -107,8 +111,6 @@ public class ClientsJobsService {
         }
         return readValue;
     }
-    
-    
 
     public ArrayList<ClientOffers> getAll() throws IOException {
 
@@ -136,8 +138,7 @@ public class ClientsJobsService {
         return ClientOffersList;
 
     }
-    
-    
+
     public ArrayList<ClientOffers> getAllByClientId(String id) throws IOException {
 
         client = elasticClientConf.getClient();
@@ -163,32 +164,42 @@ public class ClientsJobsService {
         return ClientOffersList;
 
     }
-    
-    
-//     public ClientOffers getByClientId() throws IOException {
-//
-//        client = elasticClientConf.getClient();
-////        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
-//        QueryBuilder qb = QueryBuilders.matchAllQuery();
-//        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
-//                .setTypes("jobs")
-//                .setQuery(qb) // Query
-//                .execute()
-//                .actionGet();
-//
-//        SearchHit[] hits = response.getHits().getHits();
-//        ObjectMapper mapper = new ObjectMapper();
-//        ArrayList<ClientOffers> ClientOffersList = new ArrayList<>();
-//
-//        if (hits.length > 0) {
-//            for (int i = 0; i < hits.length; i++) {
-//                ClientOffers readValue = mapper.readValue(hits[i].getSourceAsString(), ClientOffers.class);
-//                readValue.setId(hits[i].getId());
-//                ClientOffersList.add(readValue);
-//
-//            }
-//        }
-//        return ClientOffersList;
-//
-//    }
+
+    /**
+     *
+     * @param departement
+     * @param text
+     * @return
+     * @throws IOException
+     */
+    public List<ClientOffers> findByTerms(String departement, String text) throws IOException {
+        
+          client = elasticClientConf.getClient();
+        
+        List<ClientOffers> clientOffersList = new ArrayList<>();
+        BoolQueryBuilder qb = QueryBuilders.boolQuery();
+
+        qb.must(QueryBuilders.queryStringQuery(text));
+        qb.must(QueryBuilders.termQuery("dep", departement));
+        qb.must(QueryBuilders.termQuery("publish", "true"));
+
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
+                .setTypes("jobs")
+                .setQuery(qb)
+                .setFrom(0).setSize(20).setExplain(true)
+                .addSort(fieldSort("lastUpdateDate").order(DESC).missing("_last"))// Query
+                .execute()
+                .actionGet();
+        SearchHit[] hits = response.getHits().getHits();
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                ClientOffers readValue = mapper.readValue(hit.getSourceAsString(), ClientOffers.class);
+                clientOffersList.add(readValue);
+            }
+        }
+
+        return clientOffersList;
+    }
 }

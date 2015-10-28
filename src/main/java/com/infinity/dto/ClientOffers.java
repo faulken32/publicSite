@@ -24,6 +24,9 @@ public class ClientOffers {
     private String dep;
     private String profileName;
     private String profiType;
+    private boolean publish;
+    private String lastUpdateDate;
+    
     private PartialsClients partialsClients;
     private ArrayList<TechnoCriteria> technoCriterias;
 
@@ -34,8 +37,7 @@ public class ClientOffers {
     public void setDep(String dep) {
         this.dep = dep;
     }
-    
-    
+       
 
     public String getId() {
         return id;
@@ -111,7 +113,23 @@ public class ClientOffers {
         this.technoCriterias = technoCriterias;
     }
 
-  
+    public Boolean getPublish() {
+        return publish;
+    }
+
+    public void setPublish(Boolean publish) {
+        this.publish = publish;
+    }
+
+    public String getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(String date) {
+        this.lastUpdateDate = date;
+    }
+
+    
     
     
     
