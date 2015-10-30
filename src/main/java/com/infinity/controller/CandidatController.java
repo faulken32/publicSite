@@ -47,6 +47,7 @@ public class CandidatController extends AController{
     @Autowired
     private SchoolService schoolService;
     
+    private final static String mainClass = "back";
     
 
    
@@ -120,7 +121,7 @@ public class CandidatController extends AController{
     public ModelAndView candidatChangePass() throws Exception {
 
         ModelAndView modelAndView = new ModelAndView("pass");
-
+        super.setFooterDisPlayOff(modelAndView);
         return modelAndView;
     }
     
@@ -131,7 +132,7 @@ public class CandidatController extends AController{
         
         ModelAndView modelAndView = new ModelAndView("pass");
         super.setAuth();
-        
+        super.setFooterDisPlayOff(modelAndView);
       
         Users findByName = usersDao.findByName(super.authName);
             boolean old = false;

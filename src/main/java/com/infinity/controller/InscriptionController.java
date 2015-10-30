@@ -109,7 +109,7 @@ public class InscriptionController  extends AController{
     public ModelAndView index(@PathVariable String id, @PathVariable Optional<String> update) {
 
         ModelAndView mv = new ModelAndView("step1");
-
+        super.setFooterDisPlayOff(mv);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Candidat byId = candidatService.getById(id);
@@ -142,7 +142,7 @@ public class InscriptionController  extends AController{
         boolean errorL = false;
         boolean errorM = false;
         ModelAndView mv = new ModelAndView("step1");
-        
+        super.setFooterDisPlayOff(mv);
         mv.addObject("status", candidatEnum.getStatusList());
         mv.addObject("selectedStatus", candidat.getStatus());
         mv.addObject("name", name);
@@ -153,13 +153,11 @@ public class InscriptionController  extends AController{
             mv.addObject("erroL", errorL);
         } else {
             
-            ArrayList<String> language = candidat.getLanguage();
-            
+            ArrayList<String> language = candidat.getLanguage();            
             for (Iterator<String> iterator = language.iterator(); iterator.hasNext();) {
                 if(iterator.next().isEmpty()){
                     iterator.remove();
-                }
-                
+                }                
             }
             candidat.setLanguage(language);
         }
@@ -194,7 +192,7 @@ public class InscriptionController  extends AController{
     public ModelAndView step2(@PathVariable Optional<String> expId, @PathVariable Optional<String> update) throws IOException {
 
         ModelAndView mv = new ModelAndView("step2");
-
+        super.setFooterDisPlayOff(mv);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
@@ -285,6 +283,7 @@ public class InscriptionController  extends AController{
     public ModelAndView step3(@PathVariable Optional<String> schoolId) {
 
         ModelAndView mv = new ModelAndView("step3");
+        super.setFooterDisPlayOff(mv);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);

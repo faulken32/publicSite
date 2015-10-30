@@ -19,16 +19,17 @@
         <link rel="stylesheet" href="<c:url value="/resources/js/jquery-ui/jquery-ui.min.css" />" type="text/css"/>
         <script src=" <c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script> 
          <script src=" <c:url value="/resources/js/jquery-ui/jquery-ui.js" />"></script> 
+         <link href='https://fonts.googleapis.com/css?family=Patua+One' rel='stylesheet' type='text/css'>
     </head>
 
-    <body class="back">
+    <body class="${mainClass}">
         <tiles:insertAttribute name="header"/>
         <tiles:insertAttribute name="nav"/>
 
         <div class="container-fluid">
             <tiles:insertAttribute name="body" />
         </div>
-
+         <tiles:insertAttribute name="footer" />
     </body>
 </html>
 

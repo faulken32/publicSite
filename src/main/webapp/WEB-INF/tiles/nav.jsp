@@ -7,6 +7,7 @@
 
 <nav role="navigation" class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
+        <a class="navbar-brand" href="<c:url value="/"/>">CereBROS</a>
         <ul class="nav navbar-nav navbar-right">
             <c:choose>
                 <c:when test="${page == 'home'}">

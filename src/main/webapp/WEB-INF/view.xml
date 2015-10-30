@@ -53,8 +53,8 @@
         <put-attribute name="title" value="home p"/>
         <put-attribute name="body" value="/WEB-INF/views/homeRecrutor.jsp"/>
     </definition>
-       
-          
-             
-                   
+      <definition name="displayOffers" extends="default">
+        <put-attribute name="title" value="home p"/>
+        <put-attribute name="body" value="/WEB-INF/views/displayOffers.jsp"/>
+    </definition>                                              
 </tiles-definitions>

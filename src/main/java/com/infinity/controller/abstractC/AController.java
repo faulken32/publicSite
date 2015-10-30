@@ -5,9 +5,9 @@
  */
 package com.infinity.controller.abstractC;
 
-import com.infinity.controller.CandidatController;
+import com.infinity.dao.UsersDao;
 import com.infinity.entity.Users;
-import javax.annotation.PostConstruct;
+import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -32,8 +34,25 @@ public class AController {
     protected Authentication auth;
     protected String authName;
     protected final static String CLIENT_ID = "clientId";
-    
-    
+    protected final static boolean noFooter = false;
+    protected final static boolean footer = true;
+
+    protected void setFooterDisPlayOff(ModelAndView mv) {
+
+        if (mv != null) {
+            mv.addObject("nofooter", noFooter);
+        }
+
+    }
+
+    protected void setFooterDisPlayON(ModelAndView mv) {
+
+        if (mv != null) {
+            mv.addObject("nofooter", footer);
+        }
+
+    }
+
     /**
      * set auth name if logged
      */
@@ -41,11 +60,10 @@ public class AController {
 
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             this.auth = SecurityContextHolder.getContext().getAuthentication();
-            this.authName = auth.getName();                        
+            this.authName = auth.getName();
         }
 
     }
-    
 
     protected void authenticateUserAndSetSession(Users user, HttpServletRequest request) {
 
@@ -65,6 +83,32 @@ public class AController {
 
             SecurityContextHolder.getContext().setAuthentication(authenticateUser);
             request.getSession().setAttribute(CLIENT_ID, user.getId());
+            this.setAuth();
+            boolean isUser = false;
+            boolean isClient = false;
+
+            Collection<? extends GrantedAuthority> authorities = this.auth.getAuthorities();
+            OUTER:
+            for (GrantedAuthority grantedAuthority : authorities) {
+                switch (grantedAuthority.getAuthority()) {
+                    case "ROLE_USER":
+                        isUser = true;
+                        break OUTER;
+                    case "ROLE_CLIENT":
+                        isClient = true;
+                        break OUTER;
+                }
+            }
+
+            if (isUser) {
+
+            } else if (isClient) {
+                request.getSession().setAttribute("authType", "client");
+
+            } else {
+                throw new IllegalStateException();
+            }
+
         } catch (Exception ex) {
             LOG.error(ex.getMessage());
         }

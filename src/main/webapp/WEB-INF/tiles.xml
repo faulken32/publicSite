@@ -8,5 +8,6 @@
     <put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
     <put-attribute name="nav" value="/WEB-INF/tiles/nav.jsp" />
     <put-attribute name="body" value="" />   
+    <put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
   </definition>
 </tiles-definitions>

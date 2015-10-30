@@ -45,10 +45,14 @@ public class RecrutorController extends AController {
     @Autowired
     private ClientsJobsService clientsJobsService;
 
+    private final static String mainClass = "back";
+
     @RequestMapping(value = {"/signin/recrutor"}, method = RequestMethod.GET)
     public ModelAndView simpleInscription() {
 
         ModelAndView mv = new ModelAndView("simple");
+        super.setFooterDisPlayOff(mv);
+        mv.addObject("mainClass", mainClass);
         return mv;
     }
 
@@ -56,6 +60,8 @@ public class RecrutorController extends AController {
     public ModelAndView homeRecrutor() {
 
         ModelAndView mv = new ModelAndView("homeRecrutor");
+        super.setFooterDisPlayOff(mv);
+        mv.addObject("mainClass", mainClass);
         return mv;
     }
 
@@ -81,6 +87,8 @@ public class RecrutorController extends AController {
 
         String attribute;
         ModelAndView mv = new ModelAndView("recrutorStep1");
+        super.setFooterDisPlayOff(mv);
+        mv.addObject("mainClass", mainClass);
         if (request.getSession() != null) {
 
             attribute = (String) request.getSession().getAttribute(CLIENT_ID);
@@ -108,6 +116,8 @@ public class RecrutorController extends AController {
 
         String attribute;
         ModelAndView mv = new ModelAndView("getRecrutor");
+        super.setFooterDisPlayOff(mv);
+        mv.addObject("mainClass", mainClass);
         if (request.getSession() != null) {
 
             attribute = (String) request.getSession().getAttribute(CLIENT_ID);
@@ -129,6 +139,8 @@ public class RecrutorController extends AController {
         String attribute;
         ClientOffers byId = null;
         ModelAndView mv = new ModelAndView("recrutorStep2");
+        mv.addObject("mainClass", mainClass);
+        super.setFooterDisPlayOff(mv);
         if (request.getSession() != null) {
 
             attribute = (String) request.getSession().getAttribute(CLIENT_ID);
@@ -144,27 +156,35 @@ public class RecrutorController extends AController {
     }
 
     @RequestMapping(value = {"/recrutor/step2/{jobId}", "/recrutor/step2"}, method = RequestMethod.POST)
-    public ModelAndView step2Post(HttpServletRequest request, @PathVariable Optional<String> jobId, @ModelAttribute ClientOffers clientOffers) throws IOException, InterruptedException, ExecutionException {
+    public String step2Post(HttpServletRequest request, @PathVariable Optional<String> jobId, @ModelAttribute ClientOffers clientOffers) throws IOException, InterruptedException, ExecutionException {
 
         String attribute;
         ClientOffers fromDb = null;
         ModelAndView mv = new ModelAndView("recrutorStep2");
+        mv.addObject("mainClass", mainClass);
+         super.setFooterDisPlayOff(mv);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-dd-MM");
         Date date = new Date();
         String format = simpleDateFormat.format(date);
-        
+
         if (request.getSession() != null) {
 
             attribute = (String) request.getSession().getAttribute(CLIENT_ID);
+            Clients byId = clientsService.getById(attribute);
 
             if (jobId.isPresent()) {
 
                 fromDb = clientsJobsService.getById(jobId.get());
+
+                PartialsClients partialsClients = new PartialsClients();
+                partialsClients.setName(byId.getName());
+                partialsClients.setId(attribute);
+
                 clientOffers.setLastUpdateDate(format);
-                clientOffers.setPartialsClients(fromDb.getPartialsClients());
+
+                clientOffers.setPartialsClients(partialsClients);
                 clientOffers.setTechnoCriterias(fromDb.getTechnoCriterias());
                 clientsJobsService.updateOneById(clientOffers);
-
                 mv.addObject("jobs", clientOffers);
             } else {
                 if (clientOffers != null) {
@@ -172,6 +192,7 @@ public class RecrutorController extends AController {
                     String addJobs = clientsJobsService.addJobs(clientOffers);
                     clientOffers.setId(addJobs);
                     PartialsClients partialsClients = new PartialsClients();
+                    partialsClients.setName(byId.getName());
                     partialsClients.setId(attribute);
                     clientOffers.setPartialsClients(partialsClients);
                     clientsJobsService.updateOneById(clientOffers);
@@ -182,7 +203,7 @@ public class RecrutorController extends AController {
 
         }
 
-        return mv;
+        return "redirect:/recrutor/step2/" + clientOffers.getId();
     }
 
     @RequestMapping(value = {"/recrutor/step2/criteria/updateAdd/{offerId}/{clienId}"}, method = RequestMethod.POST)
