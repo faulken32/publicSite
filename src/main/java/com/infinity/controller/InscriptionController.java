@@ -63,14 +63,15 @@ public class InscriptionController  extends AController{
 
     @Autowired
     private UsersDao usersDao;
-
+    
+    private final static String mainClass = "back";
 
 
     @RequestMapping(value = {"/signin"}, method = RequestMethod.GET)
     public ModelAndView simpleInscription() {
 
         ModelAndView mv = new ModelAndView("simple");
-
+        mv.addObject("mainClass", mainClass);
         return mv;
     }
 
@@ -100,6 +101,7 @@ public class InscriptionController  extends AController{
         }
 
         ModelAndView mv = new ModelAndView("simple");
+         mv.addObject("mainClass", mainClass);
         mv.addObject("error", res);
 
         return (T) mv;

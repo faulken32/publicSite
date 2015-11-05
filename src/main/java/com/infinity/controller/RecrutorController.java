@@ -91,7 +91,7 @@ public class RecrutorController extends AController {
         mv.addObject("mainClass", mainClass);
         if (request.getSession() != null) {
 
-            attribute = (String) request.getSession().getAttribute(CLIENT_ID);
+            attribute = (String) request.getSession().getAttribute(USER_ID);
             Clients byId = clientsService.getById(attribute);
             mv.addObject("client", byId);
 
@@ -120,7 +120,7 @@ public class RecrutorController extends AController {
         mv.addObject("mainClass", mainClass);
         if (request.getSession() != null) {
 
-            attribute = (String) request.getSession().getAttribute(CLIENT_ID);
+            attribute = (String) request.getSession().getAttribute(USER_ID);
             Clients byId = clientsService.getById(attribute);
 
             ArrayList<ClientOffers> all = clientsJobsService.getAllByClientId(byId.getId());
@@ -143,7 +143,7 @@ public class RecrutorController extends AController {
         super.setFooterDisPlayOff(mv);
         if (request.getSession() != null) {
 
-            attribute = (String) request.getSession().getAttribute(CLIENT_ID);
+            attribute = (String) request.getSession().getAttribute(USER_ID);
 
             if (jobId.isPresent()) {
                 byId = clientsJobsService.getById(jobId.get());
@@ -169,7 +169,7 @@ public class RecrutorController extends AController {
 
         if (request.getSession() != null) {
 
-            attribute = (String) request.getSession().getAttribute(CLIENT_ID);
+            attribute = (String) request.getSession().getAttribute(USER_ID);
             Clients byId = clientsService.getById(attribute);
 
             if (jobId.isPresent()) {

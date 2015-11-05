@@ -57,6 +57,7 @@ public class CandidatController extends AController{
         
         
         ModelAndView mv = new ModelAndView("home");
+        mv.addObject("mainClass", mainClass);
             
         return mv;
     }
@@ -72,6 +73,7 @@ public class CandidatController extends AController{
         boolean noSchool = true;
 
         ModelAndView mv = new ModelAndView("getCandidat");
+        mv.addObject("mainClass", mainClass);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -121,6 +123,7 @@ public class CandidatController extends AController{
     public ModelAndView candidatChangePass() throws Exception {
 
         ModelAndView modelAndView = new ModelAndView("pass");
+        modelAndView.addObject("mainClass", mainClass);
         super.setFooterDisPlayOff(modelAndView);
         return modelAndView;
     }
@@ -131,6 +134,7 @@ public class CandidatController extends AController{
 
         
         ModelAndView modelAndView = new ModelAndView("pass");
+        modelAndView.addObject("mainClass", mainClass);
         super.setAuth();
         super.setFooterDisPlayOff(modelAndView);
       

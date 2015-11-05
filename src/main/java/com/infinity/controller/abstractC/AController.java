@@ -5,7 +5,6 @@
  */
 package com.infinity.controller.abstractC;
 
-import com.infinity.dao.UsersDao;
 import com.infinity.entity.Users;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +32,7 @@ public class AController {
     protected AuthenticationManagerBuilder authenticationManager;
     protected Authentication auth;
     protected String authName;
-    protected final static String CLIENT_ID = "clientId";
+    protected final static String USER_ID = "clientId";
     protected final static boolean noFooter = false;
     protected final static boolean footer = true;
 
@@ -82,7 +81,7 @@ public class AController {
             Authentication authenticateUser = object.authenticate(token);
 
             SecurityContextHolder.getContext().setAuthentication(authenticateUser);
-            request.getSession().setAttribute(CLIENT_ID, user.getId());
+            request.getSession().setAttribute(USER_ID, user.getId());
             this.setAuth();
             boolean isUser = false;
             boolean isClient = false;

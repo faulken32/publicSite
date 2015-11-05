@@ -17,13 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LogController {
 
-    
+    private final static String mainClass = "back";
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
 
         ModelAndView modelAndView = new ModelAndView("login");
-
+        modelAndView.addObject("mainClass", mainClass);
         return modelAndView;
     }
     
