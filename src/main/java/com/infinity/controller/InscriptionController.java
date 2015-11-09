@@ -88,7 +88,7 @@ public class InscriptionController  extends AController{
     public <T extends Object> T simpleInscriptionPost(String name, String pass, HttpServletRequest request) throws IOException {
 
         String res = null;
-
+        
         try {
             Users saveUser = usersDao.saveUser(name, pass);
             super.authenticateUserAndSetSession(saveUser, request);
@@ -120,6 +120,7 @@ public class InscriptionController  extends AController{
         mv.addObject("status", candidatEnum.getStatusList());
         mv.addObject("name", name);
         mv.addObject("candidat", byId);
+         mv.addObject("mainClass", mainClass);
         if (update.isPresent() && "true".endsWith(update.get())) {
 
             mv.addObject("update", true);
@@ -148,7 +149,7 @@ public class InscriptionController  extends AController{
         mv.addObject("status", candidatEnum.getStatusList());
         mv.addObject("selectedStatus", candidat.getStatus());
         mv.addObject("name", name);
-        
+        mv.addObject("mainClass", mainClass);
         if (candidat.getLanguage().isEmpty()) {
             
             errorL = true;
@@ -195,6 +196,7 @@ public class InscriptionController  extends AController{
 
         ModelAndView mv = new ModelAndView("step2");
         super.setFooterDisPlayOff(mv);
+        mv.addObject("mainClass", mainClass);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
@@ -297,6 +299,7 @@ public class InscriptionController  extends AController{
         }
 
         mv.addObject("candidatId", findByName.getId());
+          mv.addObject("mainClass", mainClass);
 
         return mv;
     }

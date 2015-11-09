@@ -8,19 +8,22 @@ package com.infinity.controller;
 import com.infinity.controller.abstractC.AController;
 import com.infinity.dao.UsersDao;
 import com.infinity.dto.Candidat;
+import com.infinity.dto.CandidatOffers;
+import com.infinity.dto.ClientOffers;
 import com.infinity.dto.Experiences;
 import com.infinity.dto.School;
 import com.infinity.entity.Users;
+import com.infinity.service.CandidatOffersService;
 
 import com.infinity.service.CandidatService;
+import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ExpService;
 import com.infinity.service.SchoolService;
 import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,6 +50,12 @@ public class CandidatController extends AController{
     @Autowired
     private SchoolService schoolService;
     
+    @Autowired
+    private CandidatOffersService candidatOffersService;
+    
+    @Autowired
+    private ClientsJobsService clientsJobsService;
+    
     private final static String mainClass = "back";
     
 
@@ -71,18 +80,38 @@ public class CandidatController extends AController{
 
         boolean noExp = true;
         boolean noSchool = true;
-
+        boolean noApply = true;
         ModelAndView mv = new ModelAndView("getCandidat");
         mv.addObject("mainClass", mainClass);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        super.setAuth();
 
-        String name = auth.getName();
+        String name = super.authName;
         Users findByname = usersDao.findByName(name);
         Candidat candidat = candidatService.getById(findByname.getId());
-        ArrayList<Experiences> byIdSearhText = expService.getByIdSearhText(findByname.getId());
-        ArrayList<School> schoolList = schoolService.getByIdSearhText(findByname.getId());
-
+        List<Experiences> byIdSearhText = expService.getByIdSearhText(findByname.getId());
+        List<School> schoolList = schoolService.getByIdSearhText(findByname.getId());
+        List<CandidatOffers> candidatOffersList = candidatOffersService.getByIdSearhText(findByname.getId());
+        List<ClientOffers> clientOffersList = new ArrayList<>();
+        
+        for (CandidatOffers candidatOffers : candidatOffersList) {                       
+             
+            ClientOffers byId = clientsJobsService.getById(candidatOffers.getOfferId());
+            if (byId != null) {
+                clientOffersList.add(byId);
+            }                                    
+        }
+ 
+        
+        
+        if (clientOffersList.isEmpty()) {
+            noApply= true;
+        } else {
+            noApply = false;
+            mv.addObject("noApply", noApply);
+            mv.addObject("clientOffersList", clientOffersList);
+        }
+        
         if (byIdSearhText.isEmpty()) {
             noExp = true;
         } else {

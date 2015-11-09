@@ -22,6 +22,6 @@ and open the template in the editor.
         </encoder>
     </appender>
   <root level="ERROR">
-    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
   </root>
 </configuration>

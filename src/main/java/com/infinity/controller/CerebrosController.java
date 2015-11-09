@@ -56,8 +56,14 @@ public class CerebrosController extends AController {
         ModelAndView mv = new ModelAndView("cerebros");
         mv.addObject("noRes", false);
         mv.addObject("mainClass", mainClass);
+      
+        
         super.setFooterDisPlayON(mv);
+          mv.addObject("normalFooter", true);
         List<ClientOffers> findByTerms = clientsJobsService.findByTerms(departement, text);
+        mv.addObject("departement", departement);
+        mv.addObject("text", text);
+
         if (!findByTerms.isEmpty()) {
 
             mv.addObject("res", findByTerms);
@@ -94,7 +100,9 @@ public class CerebrosController extends AController {
 
         ClientOffers byId = clientsJobsService.getById(offerId);
         mv.addObject("offers", byId);
-        if (super.authName != null && !super.authName.isEmpty() && !"anonymousUser".equals(super.authName) ) {
+        if (super.authName != null && !super.authName.isEmpty()
+                && !"anonymousUser".equals(super.authName)
+                && !"ROLE_CLIENT".equals(super.getAuthType())) {
 
             ArrayList<CandidatOffers> byOfferId = candidatOffersService.getByOfferId(offerId);
             boolean alreadyApply = false;
@@ -111,7 +119,7 @@ public class CerebrosController extends AController {
             }
 
             if (!alreadyApply) {
-                
+
                 CandidatOffers candidatOffers = new CandidatOffers();
                 candidatOffers.setId(UUID.randomUUID().toString());
                 PartialCandidat partialCandidat = new PartialCandidat();
@@ -119,7 +127,7 @@ public class CerebrosController extends AController {
                 candidatOffers.setOfferId(offerId);
                 candidatOffers.setPartialCandidat(partialCandidat);
                 candidatOffersService.addCandidatOffers(candidatOffers);
-                
+                mv.addObject("applyOk", true);
             } else {
                 mv.addObject("alreadyApply", alreadyApply);
             }

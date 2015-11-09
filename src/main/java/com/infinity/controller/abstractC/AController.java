@@ -64,6 +64,30 @@ public class AController {
 
     }
 
+    /**
+     *
+     * @return
+     */
+    protected String getAuthType() {
+
+        String authType = null;
+
+      
+        if (this.auth != null) {
+            Collection<? extends GrantedAuthority> authorities = this.auth.getAuthorities();
+
+            
+            for (GrantedAuthority grantedAuthority : authorities) {
+                
+               authType = grantedAuthority.getAuthority();
+            }
+
+        }
+
+        return authType;
+
+    }
+
     protected void authenticateUserAndSetSession(Users user, HttpServletRequest request) {
 
         try {

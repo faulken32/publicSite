@@ -2,15 +2,12 @@
 <div class="row">
     <br>
     <br>
-
-  
     <div class="col-md-1"></div>
     <div class="col-md-10 ">
         <div class="backgrondTrans">
             <div class="row">
                 <div class="col-md-3"><h4>Données personelles</h4></div>
                 <div class="col-md-9 control">
-
                     <a role="button" class="pull-right gray"  role="button" title="Modifier vos données" href="<c:url value="/register/step1/${candidat.id}/true"/>" >
                         <i class="glyphicon glyphicon-pencil">  </i>
                     </a>
@@ -18,8 +15,6 @@
                         <i class="glyphicon glyphicon-lock"></i>
                     </a>
                 </div>
-
-
             </div>
             <div>   
                 <div class="row gray">
@@ -93,16 +88,7 @@
             </div>
         </div>
 
-        <!--                <div class="backgrondTrans">
-                            <div class="">
-                                <h4> Graphiques  <span  class="glyphicon glyphicon-pencil"></span></h4>
-                            </div>
-                            <div>   
-                                <div class="row gray">
-                                    <iframe id="kibana" src="http://localhost:5601/#/visualize/create?embed&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),vis:(aggs:!((id:'1',params:(field:duration),schema:metric,type:sum),(id:'2',params:(field:tecnoList,order:desc,orderBy:'1',size:5),schema:segment,type:terms)),listeners:(),params:(addLegend:!f,addTimeMarker:!f,addTooltip:!f,defaultYExtents:!f,mode:stacked,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),type:histogram))&indexPattern=cvdb2&type=histogram&_g=()" height="600" width="800" style="border:none;"></iframe>
-                                </div>
-                            </div>
-                        </div>-->
+
         <div class="backgrondTrans">
 
             <h4>Votre CV</h4>
@@ -196,7 +182,7 @@
             <div class="row collapse"  id="collapseSchool">
                 <div class="col-md-12 marginTop gray">
                     <c:if test="${noSchool}">
-                        Vous n'avez pas de formation renseignées. 
+                        Vous n'avez pas de formations renseignées. 
                         <a href="<c:url value="/register/step3"/>">Ajouter</a>
                     </c:if>
                     <c:forEach items="${school}" var="school">
@@ -234,18 +220,63 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </c:forEach>      
+
+                    </c:forEach>  
+                </div>
             </div>
         </div>
-        <div class="col-md-1"></div>
+
+        <div class="backgrondTrans">
+
+            <h4>Vos applications</h4>
+
+            <div class="control">
+                <a  role="button" data-toggle="collapse" href="#collapseAppli" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="glyphicon glyphicon-menu-down"></i>
+                </a>                
+            </div>
+            <div class="row collapse"  id="collapseAppli">
+                <div class="col-md-12 marginTop gray">
+                    <c:if test="${noSchool}">
+                        Vous n'avez postulez à aucune offres 
+                        <a href="<c:url value="/register/step3"/>">Ajouter</a>
+                    </c:if>
+                    <c:forEach items="${clientOffersList}" var="offer">
+                        <div class="col-md-10 backgrondTrans center-block gray" id="blockFor${offer.id}">
+                            <div class="control"> 
+                              
+                                <a  role="button" data-toggle="collapse" href="#c${offer.id}" aria-expanded="false" aria-controls="${offer.id}">
+                                    <i class="glyphicon glyphicon-menu-down"></i>
+                                </a>
+                            </div>
+
+                            <div>
+                                <p>
+                                <h4> ${offer.title}</h4>
+                                </p>
+                            </div>
+                            <div id="c${offer.id}" class="collapse">
+                               ${offer.profileName}
+                               ${offer.profiType}
+                            </div>
+                        </div>
+
+
+                    </c:forEach>  
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>          
+    <div class="col-md-1"></div>
 
 
 
-    </div>
 </div>
-</div> 
+
 
 
 <script type="text/javascript">

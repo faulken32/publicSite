@@ -7,15 +7,15 @@
 
 <nav role="navigation" class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<c:url value="/"/>">CereBROS</a>
+        <a class="navbar-brand" href="<c:url value="/"/>">{Cerebros}</a>
         <ul class="nav navbar-nav navbar-right">
             <c:choose>
                 <c:when test="${page == 'home'}">
                     <li>
-                        <a href="<c:url value="/home/recrutor" />">RECRUTEUR</a> 
+                        <a href="<c:url value="/home/recrutor" />"><strong>RECRUTEUR</strong></a> 
                     </li>
                     <li>
-                        <a href="<c:url value="/home/candidat" />">CANDIDAT</a> 
+                        <a href="<c:url value="/home/candidat" />"><strong>CANDIDAT</strong></a> 
                     </li>
 
                 </c:when>

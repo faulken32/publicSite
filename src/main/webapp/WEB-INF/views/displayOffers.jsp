@@ -8,11 +8,18 @@
             <div class="col-md-8">                             
                 <div class="well">
                     <c:if test="${noAuth == true}">vous devez être connecté pour postuler</c:if>
-                    <p>Société  : ${offers.partialsClients.name}</p>
+                    <p><strong>Société </strong> : ${offers.partialsClients.name}</p>
                     <p>Titre de l'offre  : ${offers.title}</p>                      
                     <p>Nom du profil  : ${offers.profileName}</p>
 
+
                     <p>${offers.desc}</p>
+                    <strong><p>Compétences recherchées </p></strong>
+                    <c:forEach items="${offers.technoCriterias}" var="techno">
+                        <kbd class="grayKbd">${techno.technoName}</kbd>
+                    </c:forEach>
+                    <br>
+                    <br>
                     <c:if test="${noAuth == true}">
                         <p class="error">Vous devez être connecté pour postuler
                         </p>
@@ -26,6 +33,15 @@
                         <br/>
                         <br/>
                         <div class="alert alert-danger alert-dismissable"> Il semblerai que vous avec déjà postulé à cette offre
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>  
+
+                    </c:if>
+
+                    <c:if test="${applyOk == true}">
+                        <br/>
+                        <br/>
+                        <div class="alert alert-info alert-dismissable">Application reussi.
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>  
 

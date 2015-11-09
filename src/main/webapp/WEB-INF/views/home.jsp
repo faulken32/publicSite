@@ -20,17 +20,3 @@
     </div>
     <div class="col-md-4"></div>
 </div>
-
-<script type="text/javascript" src=" <c:url  value="/resources/js/jquery-validation/dist/jquery.validate.min.js" />"></script>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-
-//                $('.load').transition({opacity: 1}, 1500);
-
-//        $('#step1').validate();
-
-
-    });
-</script>

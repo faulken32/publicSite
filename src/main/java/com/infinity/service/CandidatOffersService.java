@@ -8,6 +8,7 @@ package com.infinity.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infinity.dto.CandidatOffers;
+import com.infinity.dto.Experiences;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.elasticsearch.action.get.GetResponse;
@@ -17,6 +18,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
+import static org.elasticsearch.search.sort.SortOrder.DESC;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,6 +124,34 @@ public class CandidatOffersService {
             LOG.error(e.getMessage());
         }
         return candidatOffersList;
+    }
+    
+     public ArrayList<CandidatOffers> getByIdSearhText(String id) throws IOException {
+
+        LOG.debug("id du candidat {} ", id);
+        client = elasticClientConf.getClient();
+//        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
+        QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
+                .setTypes("candidatOffer")
+                .setQuery(qb)
+                .setFrom(0).setSize(100).setExplain(true)
+                .execute()
+                .actionGet();
+
+        SearchHit[] hits = response.getHits().getHits();
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<CandidatOffers> candidateOffersList = new ArrayList<>();
+
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                CandidatOffers readValue = mapper.readValue(hit.getSourceAsString(), CandidatOffers.class);
+                readValue.setId(hit.getId());
+                candidateOffersList.add(readValue);
+            }
+        }
+        return candidateOffersList;
+
     }
 
 }

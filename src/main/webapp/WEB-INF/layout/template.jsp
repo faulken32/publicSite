@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
         <title><tiles:insertAttribute name="title"/> </title>
-      
+        <meta name="description" content="<tiles:insertAttribute name="desc"/>">
         <script src=" <c:url value="/resources/js/jquery.min.js" />"></script>           
         <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" type="text/css"/>       
         <link rel="stylesheet" href=" <c:url value="/resources/css/main.css" />" type="text/css"/>        
