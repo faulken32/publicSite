@@ -20,16 +20,14 @@
     <div class="col-md-4"></div>
 </div>
 
-<script type="text/javascript" src=" <c:url  value="/resources/js/jquery-validation/dist/jquery.validate.min.js" />"></script>
-<script type="text/javascript">
 
-    $(document).ready(function () {
-
-
-//                $('.load').transition({opacity: 1}, 1500);
-
-//        $('#step1').validate();
-
-
-    });
-</script>
+<div class="row  marginTop">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="blog-teaser">
+            Renseigner vos annonces de recrutement et vos critères de recherche. Vous recevrez directement par email les profils qui correspondent.
+        </div>
+    </div>
+</div>
+<div class="col-md-3"></div>
+</div>

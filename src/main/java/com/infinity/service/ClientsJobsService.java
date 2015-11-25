@@ -9,7 +9,6 @@ import com.infinity.dto.ClientOffers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinity.dto.Candidat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +23,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
-import static org.elasticsearch.search.sort.SortOrder.DESC;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ClientsJobsService {
-
+    
+    
+    private static final Logger LOG = LoggerFactory.getLogger(CandidatOffersService.class);
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
@@ -91,7 +95,12 @@ public class ClientsJobsService {
 
         return version;
     }
-
+    /**
+     * 
+     * @param id
+     * @return ClientOffers
+     * @throws IOException 
+     */
     public ClientOffers getById(String id) throws IOException {
 
         client = elasticClientConf.getClient();
@@ -106,7 +115,8 @@ public class ClientsJobsService {
             ObjectMapper mapper = new ObjectMapper();
             readValue = mapper.readValue(response.getSourceAsString(), ClientOffers.class);
         } catch (NullPointerException e) {
-
+            
+            LOG.error(e.getMessage(), e);
             return null;
         }
         return readValue;
@@ -115,7 +125,7 @@ public class ClientsJobsService {
     public ArrayList<ClientOffers> getAll() throws IOException {
 
         client = elasticClientConf.getClient();
-//        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
+
         QueryBuilder qb = QueryBuilders.matchAllQuery();
         SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes("jobs")
@@ -128,11 +138,10 @@ public class ClientsJobsService {
         ArrayList<ClientOffers> ClientOffersList = new ArrayList<>();
 
         if (hits.length > 0) {
-            for (int i = 0; i < hits.length; i++) {
-                ClientOffers readValue = mapper.readValue(hits[i].getSourceAsString(), ClientOffers.class);
-                readValue.setId(hits[i].getId());
+            for (SearchHit hit : hits) {
+                ClientOffers readValue = mapper.readValue(hit.getSourceAsString(), ClientOffers.class);
+                readValue.setId(hit.getId());
                 ClientOffersList.add(readValue);
-
             }
         }
         return ClientOffersList;
@@ -182,12 +191,12 @@ public class ClientsJobsService {
         qb.must(QueryBuilders.queryStringQuery(text));
         qb.must(QueryBuilders.termQuery("dep", departement));
         qb.must(QueryBuilders.termQuery("publish", "true"));
-
+        ScoreSortBuilder scoreSort = SortBuilders.scoreSort();
         SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes("jobs")
                 .setQuery(qb)
-                .setFrom(0).setSize(20).setExplain(true)
-                .addSort(fieldSort("lastUpdateDate").order(DESC).missing("_last"))// Query
+                .setFrom(0).setSize(50).setExplain(true)
+                .addSort(scoreSort.order(SortOrder.ASC))
                 .execute()
                 .actionGet();
         SearchHit[] hits = response.getHits().getHits();

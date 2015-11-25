@@ -27,7 +27,7 @@
          <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="login" extends="default">
-        <put-attribute name="title" value="Home page"/>
+        <put-attribute name="title" value="Candidat connectez vous ou créer un compte"/>
         <put-attribute name="body" value="/WEB-INF/views/login.jsp" />
          <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
@@ -57,17 +57,17 @@
          <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
      <definition name="cerebros" extends="default">
-        <put-attribute name="title" value="Cerbros le moteur de recherche de l'IT"/>
+        <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/cerebros.jsp"/>
     </definition>   
      <definition name="homeRecrutor" extends="default">
-        <put-attribute name="title" value="home p"/>
+        <put-attribute name="title" value="Recruteur onnectez vous ou créer un compte"/>
          <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/homeRecrutor.jsp"/>
     </definition>
       <definition name="displayOffers" extends="default">
-        <put-attribute name="title" value="Cerbros le moteur de recherche de l'IT"/>
+        <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
          <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/displayOffers.jsp"/>
     </definition>                                              

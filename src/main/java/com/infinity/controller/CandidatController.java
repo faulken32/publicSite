@@ -83,6 +83,7 @@ public class CandidatController extends AController{
         boolean noApply = true;
         ModelAndView mv = new ModelAndView("getCandidat");
         mv.addObject("mainClass", mainClass);
+        mv.addObject("page", "candidat");
 
         super.setAuth();
 

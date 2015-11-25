@@ -38,28 +38,37 @@ public class CerebrosController extends AController {
 
     private final static String mainClass = "blacWhite";
 
+    private List<Character> charToRemove;
+
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView home() {
 
         ModelAndView mv = new ModelAndView("cerebros");
         super.setFooterDisPlayON(mv);
-        mv.addObject("noRes", true);
+        mv.addObject("noRes", false);
         mv.addObject("page", "home");
         mv.addObject("mainClass", mainClass);
 
         return mv;
     }
 
+    /**
+     *
+     * @param departement
+     * @param text
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = {"/"}, method = RequestMethod.POST)
     public ModelAndView seachPage(String departement, String text) throws IOException {
 
         ModelAndView mv = new ModelAndView("cerebros");
         mv.addObject("noRes", false);
         mv.addObject("mainClass", mainClass);
-      
-        
+        text = this.removeSpecialChar(text);
+
         super.setFooterDisPlayON(mv);
-          mv.addObject("normalFooter", true);
+        mv.addObject("normalFooter", true);
         List<ClientOffers> findByTerms = clientsJobsService.findByTerms(departement, text);
         mv.addObject("departement", departement);
         mv.addObject("text", text);
@@ -137,6 +146,38 @@ public class CerebrosController extends AController {
         }
 
         return mv;
+    }
+    /**
+     * 
+     * @param text
+     * @return 
+     */
+    private String removeSpecialChar(String text) {
+
+        this.init();
+
+        for (Character charToRemove1 : charToRemove) {
+
+            text = text.replace(charToRemove1, ' ');
+                
+            
+        }
+
+        return text;
+    }
+    /**
+     * 
+     * @return charToRemove
+     */
+    private List<Character> init() {
+
+        charToRemove = new ArrayList<>();
+
+        charToRemove.add('!');
+        charToRemove.add('^');
+        charToRemove.add('"');
+
+        return this.charToRemove;
     }
 
 }

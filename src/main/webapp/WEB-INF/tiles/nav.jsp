@@ -7,7 +7,18 @@
 
 <nav role="navigation" class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<c:url value="/"/>">{Cerebros}</a>
+        <a class="navbar-brand" href="<c:url value="/"/>">{Cerebros beta}</a>
+        <c:if test="${page == 'candidat'}">
+            <form class="navbar-form navbar-left" role="search" action="<c:url value="/"/>" method="POST">
+                <div class="form-group">
+                    <input type="text" name="text" class="form-control" placeholder="mot clés">
+                </div>
+                   <div class="form-group">
+                       <input type="text" name="departement" class="form-control" placeholder="Département">
+                </div>
+                <button type="submit" class="btn btn-default">Ok</button>
+            </form>
+        </c:if>
         <ul class="nav navbar-nav navbar-right">
             <c:choose>
                 <c:when test="${page == 'home'}">

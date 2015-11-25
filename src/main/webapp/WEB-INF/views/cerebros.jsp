@@ -19,27 +19,41 @@
             <div class="col-md-2"></div>
         </div>
     </div>
-    <c:if test="${noRes != true}">
-        <div class="row marginTop">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-               
-                <c:forEach items="${res}" var="res">
-                    <div class="blog-teaser">
-                        <p>${res.partialsClients.name}</p>
-                        <p>${res.title}</p>                      
-                        <p>${res.profileName}</p>
-                        <p>
-                            <a class="btn btn-default btn-primary" href="<c:url value="/offers/${res.id}" />">Voir l'offre</a>
-                        </p>
+    <div class="row marginTop">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
 
-                    </div>
-                </c:forEach>
-            </div>
-            <div class="col-md-2"></div>
+            <c:choose>
+                <c:when test="${noRes != true}">
 
-        </div>
-    </c:if>
+
+                    <c:forEach items="${res}" var="res">
+                        <div class="blog-teaser">
+                            <p>${res.partialsClients.name}</p>
+                            <p>${res.title}</p>                      
+                            <p>${res.profileName}</p>
+                            <p>
+                                <a class="btn btn-default btn-primary" href="<c:url value="/offers/${res.id}" />">Voir l'offre</a>
+                            </p>
+
+                        </div>
+                    </c:forEach>
+                </div>
+
+
+            </c:when>
+            <c:otherwise>
+                <div class="blog-teaser">
+                    <p>Pas de résultat !!!</p>
+                </div>
+
+            </c:otherwise>
+
+        </c:choose>
+        <div class="col-md-2"></div>
+
+    </div>
+
 </div>
 
 <script type="text/javascript">

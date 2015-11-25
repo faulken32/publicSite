@@ -83,9 +83,9 @@
                             </div>
                             <div><h4>
                                     ${exp.title} ${exp.lastUpdateDate} <c:if test="${exp.publish}"> Publier </c:if>
-                                </h4>
-                            </div>
-                            <div id="c${exp.id}" class="collapse">
+                                    </h4>
+                                </div>
+                                <div id="c${exp.id}" class="collapse">
                                 <div>
                                     <p>  ${exp.profileName}   </p>  
                                 </div>
@@ -103,7 +103,7 @@
                                         ${exp.desc}
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>         
                     </c:forEach>       
@@ -114,52 +114,5 @@
             </div>
         </div>
         <div class="col-md-1"></div>
-
-
-
     </div>
 </div>
-</div> 
-
-
-<script type="text/javascript">
-
-//.css("background-color", "red!important")
-    $(document).ready(function () {
-//            //            $("#kibana").load(function () { 
-//            //                 $("#kibana").contents().find("body").html("ttttrt");
-//            //            } );
-//
-//
-////
-//        $("#modif").click(function () {
-//            document.location = '<c:url value="/register/step1/${candidat.id}/true"/>';
-//        });
-//
-//        $('.exp-remove').click(function () {
-//
-//            var parentId = $(this).parent().attr('id');
-//            var r = confirm("Sure !");
-//            if (r !== true) {
-//                return  false;
-//            } else {
-////              
-//                $.ajax({
-//                    url: "<c:url value="/register/del/"/>" + $(this).parent().attr('id')
-//                }).always(function (data) {
-////                    console.log(data.responseText)
-////                    console.log(parentId);
-//                    $('#blockFor' + parentId).remove();
-//
-//
-//                });
-//            }
-//        });
-//
-//       
-    });
-
-</script>
-
-
-

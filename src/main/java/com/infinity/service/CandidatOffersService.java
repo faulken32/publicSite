@@ -18,8 +18,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
-import static org.elasticsearch.search.sort.SortOrder.DESC;
+import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CandidatOffersService {
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(CandidatOffersService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CandidatOffersService.class);
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
