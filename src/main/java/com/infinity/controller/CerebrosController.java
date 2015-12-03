@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  *
@@ -41,14 +42,14 @@ public class CerebrosController extends AController {
     private List<Character> charToRemove;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home() throws NoHandlerFoundException {
 
         ModelAndView mv = new ModelAndView("cerebros");
         super.setFooterDisPlayON(mv);
         mv.addObject("noRes", false);
         mv.addObject("page", "home");
         mv.addObject("mainClass", mainClass);
-
+   
         return mv;
     }
 
@@ -58,10 +59,14 @@ public class CerebrosController extends AController {
      * @param text
      * @return
      * @throws IOException
+     * @throws org.springframework.web.servlet.NoHandlerFoundException
      */
     @RequestMapping(value = {"/"}, method = RequestMethod.POST)
-    public ModelAndView seachPage(String departement, String text) throws IOException {
-
+    public ModelAndView seachPage(String departement, String text) throws IOException, NoHandlerFoundException {
+        
+        
+       
+        
         ModelAndView mv = new ModelAndView("cerebros");
         mv.addObject("noRes", false);
         mv.addObject("mainClass", mainClass);
@@ -88,7 +93,7 @@ public class CerebrosController extends AController {
 
     @RequestMapping(value = {"/offers/{offerId}"}, method = RequestMethod.GET)
     public ModelAndView displayOffer(@PathVariable String offerId) throws IOException {
-
+        
         ModelAndView mv = new ModelAndView("displayOffers");
         super.setFooterDisPlayON(mv);
         mv.addObject("mainClass", mainClass);

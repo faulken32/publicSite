@@ -3,13 +3,13 @@
 
     <footer class= <c:choose>
                 <c:when test="${normalFooter == true}">
-                    "footer">
+                    "footerAbsolute"
                 </c:when>
                 <c:otherwise>
-                    "footerAbsolute">
+                    "footerAbsolute"
                 </c:otherwise>
             </c:choose>   
-
+	>	
 
 
             <div class="container-fluid"> 

@@ -8,8 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,6 +22,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -41,7 +41,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
 
     private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<>();
 
@@ -138,12 +138,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     }
 
-//    @Bean
-//    public AuthSuccesHandler authSuccesHandler() {
-//
-//        return new AuthSuccesHandler();
-//    }
-
 //    /**
 //     *
 //     * @return
@@ -163,4 +157,5 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
         return tilesConfigurer;
     }
+
 }

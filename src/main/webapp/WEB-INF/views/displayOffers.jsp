@@ -9,7 +9,7 @@
                 <div class="well">
                     <c:if test="${noAuth == true}">vous devez être connecté pour postuler</c:if>
                     <p><strong>Société </strong> : ${offers.partialsClients.name}</p>
-                    <p>Titre de l'offre  : ${offers.title}</p>                      
+                    <p><strong>Titre de l'offre</strong>  : ${offers.title}</p>                      
                     <p>Nom du profil  : ${offers.profileName}</p>
 
 

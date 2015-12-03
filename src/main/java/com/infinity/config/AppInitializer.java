@@ -17,28 +17,34 @@ public class AppInitializer implements WebApplicationInitializer {
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
     private static final String DISPATCHER_SERVLET_MAPPING = "/";
-    
+
     private static final String FILTER_ENCODING_NAME = "CharacterEncodingFilter";
     private static final String FILTER_ENCODING_MAPPING = "/*";
 
     @Override
     public void onStartup(ServletContext servletContext)
             throws ServletException {
-
+        
         AnnotationConfigWebApplicationContext dispatcherServlet = new AnnotationConfigWebApplicationContext();
-        dispatcherServlet.register(MvcConfiguration.class,SecurityConfig.class);
+        dispatcherServlet.register(MvcConfiguration.class, SecurityConfig.class);
 
-         FilterRegistration.Dynamic charEncodingfilter = servletContext.addFilter(FILTER_ENCODING_NAME, new CharacterEncodingFilter());
+        FilterRegistration.Dynamic charEncodingfilter = servletContext.addFilter(FILTER_ENCODING_NAME, new CharacterEncodingFilter());
 
         charEncodingfilter.setInitParameter("encoding", Charsets.UTF_8.displayName());
         charEncodingfilter.setInitParameter("forceEncoding", "true");
         charEncodingfilter.addMappingForUrlPatterns(null, false, FILTER_ENCODING_MAPPING);
         
+        
+        DispatcherServlet dispatcherServlet1 = new DispatcherServlet(dispatcherServlet);
+        dispatcherServlet1.setThrowExceptionIfNoHandlerFound(true);
         servletContext.addListener(new ContextLoaderListener(dispatcherServlet));
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
-                DISPATCHER_SERVLET_NAME, new DispatcherServlet(dispatcherServlet));
+                DISPATCHER_SERVLET_NAME, dispatcherServlet1);
         dispatcher.setLoadOnStartup(1);
-        dispatcher.setMultipartConfig(new MultipartConfigElement("/", 1024*1024*5, 1024*1024*5*5, 1024*1024));
+        dispatcher.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+        
+        
+        dispatcher.setMultipartConfig(new MultipartConfigElement("/", 1024 * 1024 * 5, 1024 * 1024 * 5 * 5, 1024 * 1024));
         dispatcher.addMapping(DISPATCHER_SERVLET_MAPPING);
 
     }

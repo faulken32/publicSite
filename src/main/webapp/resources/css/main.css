@@ -161,7 +161,7 @@ small{
 .blacWhite {
     
     
-    background-image: url(../moteur-de-recherche-emploi-it.jpg);
+    background-image: url("../moteur-de-recherche-emploi-it.jpg");
 }
 
 
@@ -262,11 +262,10 @@ html {
     font-size: 14px;
      min-height: 100px;
  
-   
-    
-  
+}
 
-
+.marginBottom{
+	margin-bottom : 100px;
 }
 
 .footer-widget{
