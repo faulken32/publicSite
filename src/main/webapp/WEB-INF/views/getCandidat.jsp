@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" ></script>
 <div class="row">
     <br>
     <br>
@@ -87,7 +88,18 @@
                 </div>
             </div>
         </div>
-
+        <div class="backgrondTrans">
+              <h4>Vos Compétences</h4>
+              <c:choose>
+                  <c:when test="${graphError != null}">
+                      ${graphError}
+                  </c:when>
+                  <c:otherwise>
+                      <canvas id="myChart" width="400" height="400"></canvas>
+                  </c:otherwise>
+              </c:choose>
+              
+        </div>
 
         <div class="backgrondTrans">
 
@@ -245,7 +257,7 @@
                     <c:forEach items="${clientOffersList}" var="offer">
                         <div class="col-md-10 backgrondTrans center-block gray" id="blockFor${offer.id}">
                             <div class="control"> 
-                              
+
                                 <a  role="button" data-toggle="collapse" href="#c${offer.id}" aria-expanded="false" aria-controls="${offer.id}">
                                     <i class="glyphicon glyphicon-menu-down"></i>
                                 </a>
@@ -257,8 +269,8 @@
                                 </p>
                             </div>
                             <div id="c${offer.id}" class="collapse">
-                               ${offer.profileName}
-                               ${offer.profiType}
+                                ${offer.profileName}
+                                ${offer.profiType}
                             </div>
                         </div>
 
@@ -281,14 +293,8 @@
 
 <script type="text/javascript">
 
-//.css("background-color", "red!important")
+
     $(document).ready(function () {
-//            //            $("#kibana").load(function () { 
-//            //                 $("#kibana").contents().find("body").html("ttttrt");
-//            //            } );
-//
-//
-//
         $("#modif").click(function () {
             document.location = '<c:url value="/register/step1/${candidat.id}/true"/>';
         });
@@ -332,6 +338,28 @@
                 });
             }
         });
+        
+     
+    Chart.defaults.global.scaleFontColor = "white";
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var data = {
+        labels:[<c:forEach items="${graph}" var="g">"${g.key}",</c:forEach>],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [<c:forEach items="${graph}" var="g">"${g.value}",</c:forEach>]
+            }]
+    };
+    
+    var options = null;
+    var myBarChart = new Chart(ctx).Bar(data, options);
+
+
     });
 
 </script>

@@ -47,7 +47,7 @@
                             <input class="form-control" type="text" name="technoListblock" value="${techno}" required/>   
                         </div>
 
-                        <input  class="btn btn-default"  type="submit" value="Ajouter" />
+                        <input  class="btn btn-default"  type="submit" value="Valider" />
                     </form>
                 </div>
             </div>
@@ -66,7 +66,7 @@
 
         CKEDITOR.replace('editor1');
         $("#start").datepicker({
-            dateFormat: "yy-mm-dd",
+            dateFormat: "yy-mm-dd"
            
         });
 
@@ -81,11 +81,11 @@
                 // no quoting necessary
                 start: {required: true,
                     dateISO: true,
-                    dateFormat: "yyyy-dd-mm"
+                    dateFormat: "yy-mm-dd"
                 },
                 end: {required: true,
                     dateISO: true,
-                    dateFormat: "yyyy-dd-mm"
+                    dateFormat: "yy-mm-dd"
                 }
 
             }

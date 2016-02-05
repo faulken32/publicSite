@@ -2,78 +2,90 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
     <definition name="step1" extends="default">
-        <put-attribute name="title" value="Données personnelles "/>
+        <put-attribute name="title" value="Données personnelles"/>
         <put-attribute name="body" value="/WEB-INF/views/step1.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="step2" extends="default">
         <put-attribute name="title" value="Ajouter une exprérience"/>
         <put-attribute name="body" value="/WEB-INF/views/step2.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="step3" extends="default">
         <put-attribute name="title" value="Ajouter un formation"/>
         <put-attribute name="body" value="/WEB-INF/views/step3.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="getCandidat" extends="default">
         <put-attribute name="title" value="Résumé"/>
         <put-attribute name="body" value="/WEB-INF/views/getCandidat.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition> 
     <definition name="simple" extends="default">
         <put-attribute name="title" value="Home page"/>
         <put-attribute name="body" value="/WEB-INF/views/simple.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="login" extends="default">
         <put-attribute name="title" value="Candidat connectez vous ou créer un compte"/>
         <put-attribute name="body" value="/WEB-INF/views/login.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
     <definition name="pass" extends="default">
-        <put-attribute name="title" value="changé votre mot de passe"/>
+        <put-attribute name="title" value="changer votre mot de passe"/>
         <put-attribute name="body" value="/WEB-INF/views/pass.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition> 
     <definition name="home" extends="default">
-        <put-attribute name="title" value="Conexion"/>
+        <put-attribute name="title" value="Candidat connectez vous"/>
         <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>  
     <definition name="getRecrutor" extends="default">
         <put-attribute name="title" value="Mes informations"/>
         <put-attribute name="body" value="/WEB-INF/views/getRecrutor.jsp" />
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>        
     <definition name="recrutorStep1" extends="default">
         <put-attribute name="title" value="admistratif"/>
         <put-attribute name="body" value="/WEB-INF/views/recrutorStep1.jsp"/>
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>       
-     <definition name="recrutorStep2" extends="default">
-        <put-attribute name="title" value="Ajoutez une annonce"/>
+    <definition name="recrutorStep2" extends="default">
+        <put-attribute name="title" value="Ajouter une annonce"/>
         <put-attribute name="body" value="/WEB-INF/views/recrutorStep2.jsp"/>
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
     </definition>
-     <definition name="cerebros" extends="default">
+    <definition name="cerebros" extends="default">
         <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/cerebros.jsp"/>
     </definition>   
-     <definition name="homeRecrutor" extends="default">
+    <definition name="homeRecrutor" extends="default">
         <put-attribute name="title" value="Recruteur onnectez vous ou créer un compte"/>
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/homeRecrutor.jsp"/>
     </definition>
-      <definition name="displayOffers" extends="default">
+    <definition name="displayOffers" extends="default">
         <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
-         <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
+        <put-attribute name="desc" value="Rechercher les offres d'emplois qui vous correspondes"/>
         <put-attribute name="body" value="/WEB-INF/views/displayOffers.jsp"/>
     </definition>
-     <definition name="error" extends="default">
+    <definition name="error" extends="default">
         <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
-         <put-attribute name="desc" value=""/>
+        <put-attribute name="desc" value=""/>
         <put-attribute name="body" value="/WEB-INF/views/error.jsp"/>
+    </definition> 
+    
+    <definition name="updateStatus" extends="default">
+        <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
+        <put-attribute name="desc" value=""/>
+        <put-attribute name="body" value="/WEB-INF/views/updateStatus.jsp"/>
+    </definition>
+    
+    <definition name="graph" extends="default">
+        <put-attribute name="title" value="Cerebros le moteur de recherche de l'IT"/>
+        <put-attribute name="desc" value=""/>
+        <put-attribute name="body" value="/WEB-INF/views/graph.jsp"/>
     </definition>                                              
 </tiles-definitions>

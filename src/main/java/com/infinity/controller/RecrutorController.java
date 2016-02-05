@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -273,6 +275,25 @@ public class RecrutorController extends AController {
         clientsJobsService.updateOneById(fromDb);
 
         return "redirect:/recrutor/step2/" + offerId;
+    }
+    
+    /**
+     *
+     * @param jobsId
+     * @return
+     */
+    @RequestMapping(value = {"/recrutor/del/{jobsId}"}, method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity delJobsbyId(@PathVariable String jobsId) {
+
+        ResponseEntity<String> responseEntity = null;
+        try {
+            clientsJobsService.deleteById(jobsId);
+            responseEntity = new ResponseEntity<>("OK ", HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            responseEntity = new ResponseEntity<>("error ", HttpStatus.BAD_REQUEST);
+        }
+        return responseEntity;
     }
 
 }

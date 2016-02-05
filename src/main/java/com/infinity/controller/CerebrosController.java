@@ -6,13 +6,19 @@
 package com.infinity.controller;
 
 import com.infinity.controller.abstractC.AController;
+import com.infinity.dto.Candidat;
 import com.infinity.dto.CandidatOffers;
 import com.infinity.dto.ClientOffers;
+import com.infinity.dto.Clients;
 import com.infinity.dto.PartialCandidat;
 import com.infinity.service.CandidatOffersService;
+import com.infinity.service.CandidatService;
 import com.infinity.service.ClientsJobsService;
+import com.infinity.service.ClientsService;
+import com.infinity.service.mail.MailService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -30,12 +36,22 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @Controller
 public class CerebrosController extends AController {
-
+    
+    
+    private static final String NEW_APPLICATION ="Une nouvelle application directe pour votre annonce : ";
+    
     @Autowired
     private ClientsJobsService clientsJobsService;
 
     @Autowired
     private CandidatOffersService candidatOffersService;
+    
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private ClientsService clientService;
+    @Autowired
+    private CandidatService candidatService;
 
     private final static String mainClass = "blacWhite";
 
@@ -125,22 +141,21 @@ public class CerebrosController extends AController {
                 if (candidatId == null
                         ? offer.getPartialCandidat().getId() == null
                         : candidatId.equals(offer.getPartialCandidat().getId())) {
-
                     alreadyApply = true;
                     break;
-
                 }
             }
-
             if (!alreadyApply) {
 
                 CandidatOffers candidatOffers = new CandidatOffers();
                 candidatOffers.setId(UUID.randomUUID().toString());
+                candidatOffers.setDate(new Date().toString());
                 PartialCandidat partialCandidat = new PartialCandidat();
                 partialCandidat.setId(candidatId);
                 candidatOffers.setOfferId(offerId);
                 candidatOffers.setPartialCandidat(partialCandidat);
                 candidatOffersService.addCandidatOffers(candidatOffers);
+                this.sendApplicationMail(candidatOffers, byId);
                 mv.addObject("applyOk", true);
             } else {
                 mv.addObject("alreadyApply", alreadyApply);
@@ -183,6 +198,30 @@ public class CerebrosController extends AController {
         charToRemove.add('"');
 
         return this.charToRemove;
+    }
+    
+    
+   /**
+    *  send an email to the client in case of a new application
+    * @param candidatOffers
+    * @param clientOffers
+    * @throws IOException 
+    */
+    private void sendApplicationMail(CandidatOffers candidatOffers, ClientOffers clientOffers) throws IOException{
+    
+        
+        String offerTitle = clientOffers.getTitle();
+        String idClient = clientOffers.getPartialsClients().getId();
+        Clients client = clientService.getById(idClient);
+        String email = client.getEmail();
+        String candidatID = candidatOffers.getPartialCandidat().getId();
+        Candidat candidat = candidatService.getById(candidatID);
+        
+        String cvContends = candidat.getCvContends();
+        
+        mailService.send(email, cvContends, CerebrosController.NEW_APPLICATION + offerTitle);
+        
+        
     }
 
 }

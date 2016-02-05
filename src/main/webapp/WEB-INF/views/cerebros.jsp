@@ -7,13 +7,16 @@
             <div class="col-md-8">
                 <h1 class="font">CereBros Le moteur de recherche de l'IT</h1>
                 <form method="post">
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-6">
                         <input class="form-control" type="text" name="text" placeholder="mots clés" value="${text}" required=""/>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-xs-6">
                         <input class="form-control " type="text" name="departement" value="${departement}" placeholder="numéro de département ex 06" required=""/>
                     </div>
-                    <input class="btn btn-default btn-primary" type="submit" value="Rechercher"/>
+                    <div class="col-md-2 col-xs-2">
+                        <input class="btn btn-default btn-primary  col-md-12" type="submit" value="Rechercher"/>
+                    </div>
+                    
                 </form>
             </div>
             <div class="col-md-2"></div>
@@ -29,8 +32,8 @@
 
                     <c:forEach items="${res}" var="res">
                         <div class="blog-teaser">
-                            <p>${res.partialsClients.name}</p>
-                            <p>${res.title}</p>                      
+                            <p><strong>${res.partialsClients.name}</strong></p>
+                            <p><strong>${res.title}</strong> </p>                      
                             <p>${res.profileName}</p>
                             <p>
                                 <a class="btn btn-default btn-primary" href="<c:url value="/offers/${res.id}" />">Voir l'offre</a>
@@ -38,29 +41,21 @@
 
                         </div>
                     </c:forEach>
-                </div>
 
 
-            </c:when>
-            <c:otherwise>
-                <div class="blog-teaser">
-                    <p>Pas de résultat !!!</p>
-                </div>
 
-            </c:otherwise>
+                </c:when>
+                <c:otherwise>
+                    <div class="blog-teaser">
+                        <p>Pas de résultat !!!</p>
+                    </div>
 
-        </c:choose>
+                </c:otherwise>
+
+            </c:choose>
+        </div>
         <div class="col-md-2"></div>
 
     </div>
 
 </div>
- <div class="row marginBottom"></div>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-
-
-    });
-</script>

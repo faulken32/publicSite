@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">                             
-                <div class="well">
+                <div class="well marginBottomBig">
                     <c:if test="${noAuth == true}">vous devez être connecté pour postuler</c:if>
                     <p><strong>Société </strong> : ${offers.partialsClients.name}</p>
                     <p><strong>Titre de l'offre</strong>  : ${offers.title}</p>                      
-                    <p>Nom du profil  : ${offers.profileName}</p>
+                    <p><strong>Nom du profil  : ${offers.profileName}</strong></p>
 
 
                     <p>${offers.desc}</p>

@@ -81,8 +81,10 @@
                                     <i class="glyphicon glyphicon-menu-down"></i>
                                 </a>
                             </div>
-                            <div><h4>
-                                    ${exp.title} ${exp.lastUpdateDate} <c:if test="${exp.publish}"> Publier </c:if>
+                            <div>
+                                <h4>
+                                    ${exp.title} ${exp.lastUpdateDate} <c:if test="${exp.publish}"> Publier </c:if> 
+                                    <c:if test="${!exp.adminValidate}"> non validé l'annonce apparaitra apres validation pas notre équipe </c:if> 
                                     </h4>
                                 </div>
                                 <div id="c${exp.id}" class="collapse">
@@ -107,12 +109,31 @@
                             </div>
                         </div>         
                     </c:forEach>       
-
-
-
                 </div>   
             </div>
         </div>
         <div class="col-md-1"></div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.exp-remove').click(function () {
+
+            var parentId = $(this).parent().attr('id');
+            var r = confirm("Sure !");
+            if (r !== true) {
+                return  false;
+            } else {
+                $.ajax({
+                    url: "<c:url value="/recrutor/del/"/>" + $(this).parent().attr('id')
+                }).always(function (data) {
+                               
+                    $('#blockFor' + parentId).remove();
+
+
+                });
+            }
+        });
+    });
+</script>

@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="pass">Préavis en mois</label>
-                            <input class="form-control" type="number" name="preavis" name="preavis" value="${candidat.preavis}"/> 
+                            <input class="form-control" type="number" name="preavis" name="preavis" value="${candidat.preavis}" required/> 
                         </div>
                         <div class="containerM">
                             <c:if test="${erroM}">

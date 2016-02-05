@@ -1,6 +1,4 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="spring"  uri="http://www.springframework.org/tags"%>
-
 
 
 <div div="row">
@@ -10,14 +8,23 @@
         <br />
         <br />
         <form id="addDesc" method="post">
-            <input name="id" type="hidden" value="${jobs.id}"/>  
-
+            <input name="id" type="hidden" value="${jobs.id}"/>
+         
+            <input name="adminValidate" type="hidden" 
+                   <c:choose>
+                       <c:when test="${jobs ==null || jobs.adminValidate == null || jobs.adminValidate == ''}">
+                           value="false"/>                          
+                       </c:when>                       
+                       <c:otherwise>
+                           value="${jobs.adminValidate}"/>
+                       </c:otherwise>
+                   </c:choose>                                      
             <label for="publish">
                 Publier sur le site ?
             </label>
             <p> 
                 
-                <input  class=""  name="publish" type="checkbox" 
+                <input  class="checkbox"  name="publish" type="checkbox" id="publish"
                         <c:if test="${jobs.publish}">
                             checked="true"
                         </c:if>
@@ -27,7 +34,7 @@
                 <label for="compagny">
                     Titre
                 </label>
-                <input  class="form-control"  name="title" type="text" value="${jobs.title}"/>  
+                <input  class="form-control"  name="title" type="text" value="${jobs.title}" required/>  
             </div>                    
             <div class="form-group">
                 <label for="desc">
@@ -40,24 +47,24 @@
 
             <div class="form-group ">
                 <label>département de travail</label>
-                <input  class="form-control"  name="dep" type="text" value="${jobs.dep}"/>  
+                <input  class="form-control"  name="dep" type="text" value="${jobs.dep}" required/>  
             </div>
 
             <div class="form-group ">
                 <label>Nom du profile recherché</label>
-                <input  class="form-control"  name="profileName" type="text" value="${jobs.profileName}"/>  
+                <input  class="form-control"  name="profileName" type="text" value="${jobs.profileName}" required/>  
             </div>
             <div class="form-group ">
                 <label>Type de profile</label>
-                <input  class="form-control"  name="profiType" type="text" value="${jobs.profiType}"/>
+                <input  class="form-control"  name="profiType" type="text" value="${jobs.profiType}" required/>
             </div>
             <div class="form-group">
                 <label>Nombre d'année d'exprérience minimum</label>
-                <input  class="form-control"  name="expTotalMin" type="number" value="${jobs.expTotalMin}"/>
+                <input  class="form-control"  name="expTotalMin" type="number" value="${jobs.expTotalMin}" required/>
             </div>
             <div class="form-group">
                 <label>Nombre d'année d'exprérience max</label>
-                <input  class="form-control"  name="expTotalMax" type="number" value="${jobs.expTotalMax}"/>
+                <input  class="form-control"  name="expTotalMax" type="number" value="${jobs.expTotalMax}" required/>
             </div>
             <input  class="btn btn-default"  type="submit" value="Ok"/>
             <br />
@@ -90,7 +97,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group col-md-12">
                                             <label>Technologie recherché</label>
-                                            <input  class="form-control"  name="technoName" type="text" value=""/>
+                                            <input  class="form-control"  name="technoName" type="text" value="" required/>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Nombre d'année</label>
@@ -152,7 +159,7 @@
 
                                                 <div class="form-group col-md-4">
                                                     <label>Technologie recherché</label>
-                                                    <input  class="form-control"  name="technoName-${gridRow.index}" type="text" value="${c.technoName}"/>
+                                                    <input  class="form-control"  name="technoName-${gridRow.index}" type="text" value="${c.technoName}" required/>
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Nombre d'année</label>
@@ -185,13 +192,8 @@
 <script>
 
     $(document).ready(function () {
-
-//        location.reload();
-
         CKEDITOR.replace('editor1');
         $('#criteria').submit(function () {
-
-
         });
 
     });

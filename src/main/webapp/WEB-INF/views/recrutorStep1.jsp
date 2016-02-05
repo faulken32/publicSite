@@ -10,16 +10,16 @@
             <input type="hidden" name="id" value="${client.id}" /> 
             <div class="form-group">
                 Nom du client
-                <input  class="form-control" type="text" name="name" value="${client.name}"/>            
+                <input  class="form-control" type="text" name="name" value="${client.name}" required/>            
             </div>
 
             <div class="form-group">
                 Email
-                <input  class="form-control" type="email" name="email"value="${client.email}"/>            
+                <input  class="form-control" type="email" name="email"value="${client.email}" required/>            
             </div>
             <div class="form-group">
                 Téléphone
-                <input  class="form-control" type="text" name="phone" value="${client.phone}"/>            
+                <input  class="form-control" type="text" name="phone" value="${client.phone}" required/>            
             </div>
             <input class="btn btn-default" type="submit" value="Valider" />
         </form>

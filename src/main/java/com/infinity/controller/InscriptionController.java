@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author t311372
  */
 @Controller
-public class InscriptionController  extends AController{
+public class InscriptionController extends AController {
 
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionController.class);
 
@@ -63,9 +63,8 @@ public class InscriptionController  extends AController{
 
     @Autowired
     private UsersDao usersDao;
-    
-    private final static String mainClass = "back";
 
+    private final static String mainClass = "back";
 
     @RequestMapping(value = {"/signin"}, method = RequestMethod.GET)
     public ModelAndView simpleInscription() {
@@ -81,14 +80,14 @@ public class InscriptionController  extends AController{
      * @param name
      * @param pass
      * @param request
-     * @param response
      * @return
+     * @throws java.io.IOException
      */
     @RequestMapping(value = {"/signin"}, method = RequestMethod.POST)
     public <T extends Object> T simpleInscriptionPost(String name, String pass, HttpServletRequest request) throws IOException {
 
         String res = null;
-        
+
         try {
             Users saveUser = usersDao.saveUser(name, pass);
             super.authenticateUserAndSetSession(saveUser, request);
@@ -101,18 +100,18 @@ public class InscriptionController  extends AController{
         }
 
         ModelAndView mv = new ModelAndView("simple");
-         mv.addObject("mainClass", mainClass);
+        mv.addObject("mainClass", mainClass);
         mv.addObject("error", res);
 
         return (T) mv;
     }
 
     @RequestMapping(value = {"/register/step1/{id}", "/register/step1/{id}/{update}"}, method = RequestMethod.GET)
-    public ModelAndView index(@PathVariable String id, @PathVariable Optional<String> update) {
+    public ModelAndView index(@PathVariable String id, @PathVariable Optional<String> update) throws IOException {
 
         ModelAndView mv = new ModelAndView("step1");
         super.setFooterDisPlayOff(mv);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Candidat byId = candidatService.getById(id);
 
@@ -120,7 +119,7 @@ public class InscriptionController  extends AController{
         mv.addObject("status", candidatEnum.getStatusList());
         mv.addObject("name", name);
         mv.addObject("candidat", byId);
-         mv.addObject("mainClass", mainClass);
+        mv.addObject("mainClass", mainClass);
         if (update.isPresent() && "true".endsWith(update.get())) {
 
             mv.addObject("update", true);
@@ -132,7 +131,7 @@ public class InscriptionController  extends AController{
     @RequestMapping(value = {"/register/step1"}, method = RequestMethod.POST)
     public <T extends Object> T indexForm(@ModelAttribute Candidat candidat, String update, String candidatId) throws JsonProcessingException {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         CandidatEnum candidatEnum = new CandidatEnum();
         candidat.setId(candidatId);
@@ -150,30 +149,33 @@ public class InscriptionController  extends AController{
         mv.addObject("selectedStatus", candidat.getStatus());
         mv.addObject("name", name);
         mv.addObject("mainClass", mainClass);
-        if (candidat.getLanguage().isEmpty()) {
-            
+
+        if (candidat.getLanguage() == null || candidat.getLanguage().isEmpty()) {
+
             errorL = true;
             mv.addObject("erroL", errorL);
+
         } else {
-            
-            ArrayList<String> language = candidat.getLanguage();            
+
+            ArrayList<String> language = candidat.getLanguage();
             for (Iterator<String> iterator = language.iterator(); iterator.hasNext();) {
-                if(iterator.next().isEmpty()){
+                if (iterator.next().isEmpty()) {
                     iterator.remove();
-                }                
+                }
             }
             candidat.setLanguage(language);
         }
-        if (candidat.getMobilite().isEmpty()) {
+
+        if (candidat.getMobilite() == null || candidat.getMobilite().isEmpty()) {
             errorM = true;
             mv.addObject("erroM", errorM);
-        } else {      
+        } else {
             List mobilite = candidat.getMobilite();
             for (Iterator<String> iterator = mobilite.iterator(); iterator.hasNext();) {
-                
-                if(iterator.next().isEmpty()){
+
+                if (iterator.next().isEmpty()) {
                     iterator.remove();
-                }                
+                }
             }
             candidat.setMobilite(mobilite);
         }
@@ -197,7 +199,7 @@ public class InscriptionController  extends AController{
         ModelAndView mv = new ModelAndView("step2");
         super.setFooterDisPlayOff(mv);
         mv.addObject("mainClass", mainClass);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
 
@@ -231,16 +233,39 @@ public class InscriptionController  extends AController{
         return mv;
     }
 
+    
+    
+    /**
+     * update an candantidate exp
+     * @param exp
+     * @param expId
+     * @param technoListblock
+     * @param update
+     * @return
+     * @throws JsonProcessingException
+     * @throws IOException
+     * @throws ParseException
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @RequestMapping(value = {"/register/step2/{expId}", "/register/step2"}, method = RequestMethod.POST)
     public String step2Form(@ModelAttribute Experiences exp, @PathVariable Optional<String> expId, String technoListblock,
             String update)
             throws JsonProcessingException, IOException, ParseException, InterruptedException, ExecutionException {
-
+        
         if (!technoListblock.isEmpty()) {
-
-            String[] split = technoListblock.split(",");
+            
+         
+            String technoListblockTrim = StringUtils.trimAllWhitespace(technoListblock);
+          
+            String[] split = technoListblockTrim.split(",");
             List<String> tecnoList = new ArrayList<>();
             tecnoList.addAll(Arrays.asList(split));
+//            for (String tecnoList1 : tecnoList) {
+//                
+//                String trimAllWhitespace = StringUtils.trimAllWhitespace(tecnoList1);
+//                tecnoList1 = trimAllWhitespace;
+//            }
             exp.setTecnoList(tecnoList);
 
         }
@@ -252,7 +277,7 @@ public class InscriptionController  extends AController{
         long diff = end.getTime() - start.getTime();
         float nbYear = diff / 31536000000.0f;
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
 
         Users findByName = usersDao.findByName(name);
@@ -288,7 +313,7 @@ public class InscriptionController  extends AController{
 
         ModelAndView mv = new ModelAndView("step3");
         super.setFooterDisPlayOff(mv);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
 
@@ -299,7 +324,7 @@ public class InscriptionController  extends AController{
         }
 
         mv.addObject("candidatId", findByName.getId());
-          mv.addObject("mainClass", mainClass);
+        mv.addObject("mainClass", mainClass);
 
         return mv;
     }
@@ -307,7 +332,7 @@ public class InscriptionController  extends AController{
     @RequestMapping(value = {"/register/step3/{schoolId}", "/register/step3"}, method = RequestMethod.POST)
     public String step3Form(@ModelAttribute("school") School school, @PathVariable Optional<String> schoolId) throws JsonProcessingException, IOException, InterruptedException, ExecutionException {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Users findByName = usersDao.findByName(name);
 
@@ -361,5 +386,4 @@ public class InscriptionController  extends AController{
         return responseEntity;
     }
 
-  
 }

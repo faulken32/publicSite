@@ -29,21 +29,39 @@ public class ExceptionHandlingController {
 	
 	
   private static final Logger LOG = LoggerFactory.getLogger(ExceptionHandlingController.class);
-  
+  private static final String MSG = "Ooups une erreur c'est produite";
   
     @ExceptionHandler(Throwable.class)
+  
     public ModelAndView handleError(HttpServletRequest req, Exception exception) {
     	
     	LOG.error(exception.getMessage(), exception);
+        
         ModelAndView mav = new ModelAndView();
+        mav.addObject("msg", ExceptionHandlingController.MSG);
         mav.addObject("exception", exception);
         mav.addObject("url", req.getRequestURL());
         mav.setViewName("error");
         return mav;
     }
+    
+  
+    @ExceptionHandler(NullPointerException.class)
+   public ModelAndView handleErrorNull(Exception exception) {
+    	
+    	LOG.error(exception.getMessage(), exception);
+        
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("msg", ExceptionHandlingController.MSG);
+        mav.addObject("exception", exception);
+     
+        mav.setViewName("error");
+        return mav;
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ModelAndView myError(Exception exception) {     
+    public ModelAndView myError(Exception exception) { 
+        LOG.error(exception.getMessage(), exception);
         ModelAndView mav = new ModelAndView();
         mav.addObject("exc", exception);
         mav.setViewName("error");
