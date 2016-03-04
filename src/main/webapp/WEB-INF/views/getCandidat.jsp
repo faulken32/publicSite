@@ -89,13 +89,13 @@
             </div>
         </div>
         <div class="backgrondTrans">
-              <h4>Vos Compétences</h4>
+              <h4>Vos Compétences en années d'expériences</h4>
               <c:choose>
                   <c:when test="${graphError != null}">
                       ${graphError}
                   </c:when>
                   <c:otherwise>
-                      <canvas id="myChart" width="400" height="400"></canvas>
+                      <canvas id="myChart" width="600" height="600"></canvas>
                   </c:otherwise>
               </c:choose>
               
@@ -341,6 +341,7 @@
         
      
     Chart.defaults.global.scaleFontColor = "white";
+    Chart.defaults.global.responsive = false;
 
     var ctx = document.getElementById("myChart").getContext("2d");
     var data = {
